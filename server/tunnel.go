@@ -1,4 +1,108 @@
-package main
+package server
 
-func main() {
+import (
+	"crypto/tls"
+	"github.com/jiusanzhou/tentacle/conn"
+	"github.com/jiusanzhou/tentacle/log"
+	"github.com/jiusanzhou/tentacle/msg"
+	"net"
+	"runtime/debug"
+	"time"
+)
+
+/**
+ * Tunnel: A control connection, metadata and proxy connections which
+ *         transport data.
+ */
+type Tunnel struct {
+	// request that opened the tunnel
+	// req *msg.ReqTunnel
+
+	// time when the tunnel was opened
+	start time.Time
+
+	// public url
+	url string
+
+	// tcp listener
+	listener *net.TCPListener
+
+	// control connection
+	ctl *Control
+
+	// logger
+	log.Logger
+
+	// closing
+	closing int32
+}
+
+func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
+
+	// first should set the remote connected
+
+	tunnelConn.SetDeadline(time.Time{})
+
+	// get control
+
+	// get public conn
+	clientConn := controlManager.GetConn(regTunMsg.ReqId)
+	clientConn.SetDeadline(time.Time{})
+
+	if clientConn == nil {
+		tunnelConn.Error("get client connection error.")
+		return
+	}
+
+	// pipe copy data from public and tunnel
+	conn.Join(tunnelConn, clientConn)
+
+	controlManager.DelConn(regTunMsg.ReqId)
+	clientConn.Close()
+	tunnelConn.Close()
+
+	//if c := controlManager.GetControl(regTunMsg.ClientId); c != nil {
+	//	c.SetReady(regTunMsg.ReqId)
+	//}
+}
+
+func tunnelListener(addr string, tlsConfig *tls.Config) {
+	// listen for incoming connections
+	listener, err := conn.Listen(addr, "tun", tlsConfig)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Info("Listening for tunnel connection on %s", listener.Addr.String())
+	for c := range listener.Conns {
+		go func(tunnelConn conn.Conn) {
+			// don't crash on panics
+			defer func() {
+				if r := recover(); r != nil {
+					tunnelConn.Info("tunnelListener failed with error %v: %s", r, debug.Stack())
+				}
+			}()
+
+			tunnelConn.SetReadDeadline(time.Now().Add(connReadTimeout))
+
+			var rawMsg msg.Message
+			if rawMsg, err = msg.ReadMsg(tunnelConn); err != nil {
+				tunnelConn.Warn("Failed to read message: %v", err)
+				tunnelConn.Close()
+				return
+			}
+
+			// don't timeout after the initial read, tunnel heart beating will kill
+			// dead connections
+			tunnelConn.SetReadDeadline(time.Time{})
+
+			switch m := rawMsg.(type) {
+			case *msg.RegTun:
+				NewTunnel(tunnelConn, m)
+			default:
+				tunnelConn.Close()
+			}
+		}(c)
+	}
+
 }

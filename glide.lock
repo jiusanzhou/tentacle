@@ -1,6 +1,12 @@
-hash: f70169021ee64b26b9f1f6ca228331ba10018e290588b3ea669b383d6ed9b373
-updated: 2017-01-10T16:16:49.6256+08:00
+hash: 58b62b67de9d9c044115305be34586c54188d2d5858dd8aeb0b9d6e6fdadbc37
+updated: 2017-03-03T15:54:54.7596+08:00
 imports:
 - name: github.com/alecthomas/log4go
   version: e5dc62318d9bd58682f1dceb53a4b24e8253682f
+- name: github.com/shirou/gopsutil
+  version: d371ba1293cb48fedc6850526ea48b3846c54f2c
+- name: github.com/ugorji/go
+  version: c88ee250d0221a57af388746f5cf03768c21d6e2
+  subpackages:
+  - codec
 testImports: []

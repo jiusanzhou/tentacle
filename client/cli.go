@@ -3,8 +3,8 @@ package client
 import (
 	"flag"
 	"fmt"
-	"os"
 	"github.com/jiusanzhou/tentacle/version"
+	"os"
 )
 
 const usage string = `
@@ -21,11 +21,13 @@ Examples:
 `
 
 type Options struct {
-	config   string
-	logto    string
-	loglevel string
-	command  string
-	args     []string
+	config    string
+	logto     string
+	loglevel  string
+	poolsize  int
+	command   string
+	args      []string
+	authtoken string
 }
 
 func ParseArgs() (opts *Options, err error) {
@@ -41,7 +43,7 @@ func ParseArgs() (opts *Options, err error) {
 
 	logto := flag.String(
 		"log",
-		"none",
+		"stdout",
 		"Write log messages to this file. 'stdout' and 'none' have special meanings")
 
 	loglevel := flag.String(
@@ -49,19 +51,27 @@ func ParseArgs() (opts *Options, err error) {
 		"DEBUG",
 		"The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
 
+	poolsize := flag.Int(
+		"pool-size",
+		0,
+		"Pool size for connections to tentacle service, 0 for no pool")
+
 	flag.Parse()
 
 	opts = &Options{
-		config:    *config,
-		logto:     *logto,
-		loglevel:  *loglevel,
-		command:   flag.Arg(0),
+		config:   *config,
+		logto:    *logto,
+		loglevel: *loglevel,
+		poolsize: *poolsize,
+		command:  flag.Arg(0),
 	}
 
 	switch opts.command {
 	case "info":
 		opts.args = flag.Args()[1:]
 	case "start":
+		opts.args = flag.Args()[1:]
+	case "redial":
 		opts.args = flag.Args()[1:]
 	case "version":
 		fmt.Println(version.MajorMinor())
@@ -77,7 +87,7 @@ func ParseArgs() (opts *Options, err error) {
 			return
 		}
 
-		opts.command = "default"
+		opts.command = "start"
 		opts.args = flag.Args()
 	}
 

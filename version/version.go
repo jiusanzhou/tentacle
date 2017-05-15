@@ -10,6 +10,10 @@ const (
 	Minor = "0"
 )
 
+const (
+	Name = "tentacler"
+)
+
 func MajorMinor() string {
 	return fmt.Sprintf("%s.%s", Major, Minor)
 }
