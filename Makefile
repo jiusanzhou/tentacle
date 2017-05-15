@@ -1,50 +1,30 @@
-.PHONY: default deps fmt server client release-server release-client all release-all clean contributors
+GO_EXECUTABLE ?= go
+VERSION := $(shell git describe --always --long --dirty)
 
-GLIDE_GO_EXECUTABLE ?= go
+default: build-all
 
-BUILD_TAGS=debug
+PWD = .
 
-PWD=.
+setup-build:
+	go install github.com/mitchellh/gox
+	go install github.com/Masterminds/glide
 
-default: all
+setup: setup-build
 
-test:
-	${GLIDE_GO_EXECUTABLE} test . ./gb ./path ./action ./tree ./util ./godep ./godep/strip ./gpm ./cfg ./dependency\
-	 ./importer ./msg ./repo ./mirrors
+build-server: setup
+	gox -verbose \
+	-ldflags "-X main.version=${VERSION}" \
+	-os="linux darwin windows" \
+	-arch="amd64 386" \
+	-output="dist/tentacled-{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/main/tentacled
 
-bootstrap-dist:
-	${GLIDE_GO_EXECUTABLE} get -u github.com/franciscocpg/gox
-	cd ${GOPATH}/src/github.com/franciscocpg/gox && git checkout dc50315fc7992f4fa34a4ee4bb3d60052eeb038e
-	cd ${GOPATH}/src/github.com/franciscocpg/gox && ${GLIDE_GO_EXECUTABLE} install
+build-client: setup
+	gox -verbose \
+	-ldflags "-X main.version=${VERSION}" \
+	-os="linux darwin windows" \
+	-arch="amd64 386" \
+	-output="dist/tentacler-{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/main/tentacler
 
-depss:
-	go get -tags '$(BUILD_TAGS)' -d -v ${PWD}
+build-all: build-server build-client
 
-deps:
-
-fmt:
-	${GLIDE_GO_EXECUTABLE} fmt ${PWD}/main/tentacled
-	${GLIDE_GO_EXECUTABLE} fmt ${PWD}/main/tentacler
-
-server: deps
-	${GLIDE_GO_EXECUTABLE} build -tags '$(BUILD_TAGS)' ${PWD}/main/tentacled
-
-client: deps
-	${GLIDE_GO_EXECUTABLE} build -tags '$(BUILD_TAGS)' ${PWD}/main/tentacler
-
-all: fmt server client
-
-release-server: BUILD_TAGS=release
-release-server: server
-
-release-client: BUILD_TAGS=release
-release-client: client
-
-release-all: fmt release-server release-client
-
-clean:
-	go clean -i -r .
-
-contributors:
-	echo "Contributors to tentacles, both large and small:" > CONTRIBUTORS
-	git log --raw | grep "^Author: " | sort | uniq | cut -d ' ' -f2- | sed 's/^/- /' | cut -d '<' -f1 >> CONTRIBUTORS
+.PHONY: build-all
