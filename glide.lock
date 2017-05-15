@@ -1,12 +1,28 @@
 hash: 58b62b67de9d9c044115305be34586c54188d2d5858dd8aeb0b9d6e6fdadbc37
-updated: 2017-03-03T15:54:54.7596+08:00
+updated: 2017-05-15T17:24:48.1002+08:00
 imports:
 - name: github.com/alecthomas/log4go
-  version: e5dc62318d9bd58682f1dceb53a4b24e8253682f
+  version: 18d87da5025a6e8bd58dede5ecffe3f62115bc4f
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/pquerna/ffjson
+  version: 8da775d42d3f7b9914d786965a7ad5dc27219d3f
+  subpackages:
+  - ffjson
+  - fflib/v1
+  - fflib/v1/internal
+- name: github.com/rcrowley/go-metrics
+  version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
 - name: github.com/shirou/gopsutil
   version: d371ba1293cb48fedc6850526ea48b3846c54f2c
 - name: github.com/ugorji/go
-  version: c88ee250d0221a57af388746f5cf03768c21d6e2
+  version: 708a42d246822952f38190a8d8c4e6b16a0e600c
   subpackages:
   - codec
+- name: golang.org/x/net
+  version: a6577fac2d73be281a500b310739095313165611
+  subpackages:
+  - proxy
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
 testImports: []
