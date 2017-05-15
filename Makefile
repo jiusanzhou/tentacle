@@ -23,7 +23,8 @@ depss:
 deps:
 
 fmt:
-	${GLIDE_GO_EXECUTABLE} fmt github.com/jiusanzhou/tentacle
+	${GLIDE_GO_EXECUTABLE} fmt ${PWD}/main/tentacled
+	${GLIDE_GO_EXECUTABLE} fmt ${PWD}/main/tentacler
 
 server: deps
 	${GLIDE_GO_EXECUTABLE} build -tags '$(BUILD_TAGS)' ${PWD}/main/tentacled
