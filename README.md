@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/jiusanzhou/tentacle.svg)](https://travis-ci.org/jiusanzhou/tentacle)
 
+[中文](docs/README_ZH.md)
+
 ## What we want?
 
 We want plenty of IPs for web-crawlling or something else.
