@@ -46,3 +46,36 @@ The less processing the higher performance.
 
 Tentacles is proxy server[socket5, http] with different exports.
 The export can also be used as a client, every single tentacle is for all, all tentacles are for every single one.
+
+
+## Logic
+
+```
++----------------------------------------------------------------------+
+|                                                                      |
+|                                                                      |
+|                       Tentacle                                       |
+|                                                                      |
+|                                           Tentacled                  |
+|                                          +------------+              |
+|                                          |            |              |
+|                                          |            |              |
+|   Tentacler                              |            |              |
+|    +------+                              |            |              |
+|    |      |                         :4442|Control     |              |
+|    |      <----^-------------------^----->            |              |
+|    |      |                              |            |Socks5 Proxy  |
+|    |      <----------------+             |            ++             |
+|    |      |                |             |             |             |
+|    +------+                |             |             |             |
+|                            |             |            ++             |
+|                            |             |            |              |
+|                            |        :4443|Tunnel      |              |
+|                            +------------->            |              |
+|                                          |            |              |
+|                                          |            |              |
+|                                          |            |              |
+|                                          +------------+              |
+|                                                                      |
++----------------------------------------------------------------------+
+```
