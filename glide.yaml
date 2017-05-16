@@ -1,7 +1,10 @@
 package: github.com/jiusanzhou/tentacle
 import:
-- package: github.com/shirou/gopsutil
-  version: v2.17.02
-- package: github.com/ugorji/go
+- package: github.com/alecthomas/log4go
+- package: github.com/inconshreveable/mousetrap
+- package: github.com/pquerna/ffjson
   subpackages:
-  - codec
+  - ffjson
+- package: github.com/rcrowley/go-metrics
+- package: golang.org/x/net/proxy
+- package: gopkg.in/yaml.v2
