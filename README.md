@@ -1,6 +1,8 @@
-# Tentacles
+# Tentacle
 
 > A new mode of distributed proxy.
+
+[![Build Status](https://travis-ci.org/jiusanzhou/tentacle.svg)](https://travis-ci.org/jiusanzhou/tentacle)
 
 ## What we want?
 
