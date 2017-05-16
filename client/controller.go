@@ -239,11 +239,11 @@ func (ctl *Control) control() {
 }
 
 func (ctl *Control) handleCmd(m *msg.Cmd) {
-	ctl.Info("Handle command from [%s]", m.ClientId)
+	ctl.Debug("Handle command from [%s]", m.ClientId)
 	stdOut := []string{}
 	for _, c := range m.Commands {
 		o, e := util.DoCommand(c)
-		ctl.Info("Run command: %s", c)
+		ctl.Debug("Run command: %s", c)
 		if e == nil {
 			stdOut = append(stdOut, util.B2s(o))
 		} else {
