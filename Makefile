@@ -43,6 +43,6 @@ build-client: setup
 	-arch="amd64 386" \
 	-output="dist/tentacler-{{.OS}}-{{.Arch}}/{{.Dir}}" ${PWD}/main/tentacler
 
-build-all: build-server build-client
+all: build-server build-client
 
-.PHONY: build-all build setup
+.PHONY: all build setup
