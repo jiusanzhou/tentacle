@@ -6,8 +6,8 @@ default: build-all
 PWD = .
 
 setup-build:
-	go install github.com/mitchellh/gox
-	go install github.com/Masterminds/glide
+	go get github.com/mitchellh/gox
+	go get github.com/Masterminds/glide
 
 setup: setup-build
 
