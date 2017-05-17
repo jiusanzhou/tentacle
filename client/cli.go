@@ -15,7 +15,7 @@ Advanced usage: tentacler [OPTIONS] <command> [command args] [...]
 	tentacler version			Print tentacle version
 
 Examples:
-	tentacler start ilife codertool
+	tentacler start
 	tentacler -log=stdout -config=tentacler.yml start
 	tentacler version
 `

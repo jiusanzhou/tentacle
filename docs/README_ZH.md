@@ -78,11 +78,9 @@ Usage of tentacled:
   -httpAddr string
         Public address listening forhttp proxy (default ":8887")
   -log string
-        Write log messages to this file. 'stdout' and 'none' have special meanin
-gs (default "stdout")
+        Write log messages to this file. 'stdout' and 'none' have special meanings (default "stdout")
   -log-level string
-        The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR (defau
-lt "DEBUG")
+        The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR (default "DEBUG")
   -redial-interval duration
         Redial interval for each tentacler (default 1m0s)
   -socketAddr string
@@ -100,21 +98,17 @@ lt "DEBUG")
 ```
 To honor the memory of fox&rabbit.
   -config string
-        Path to ngrok configuration file. (default: $HOME/.tentacler)
+        Path to tentcler configuration file. (default: $HOME/.tentacler)
   -log string
-        Write log messages to this file. 'stdout' and 'none' have special meanin
-gs (default "stdout")
+        Write log messages to this file. 'stdout' and 'none' have special meanings (default "stdout")
   -log-level string
-        The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR (defau
-lt "DEBUG")
+        The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR (default "DEBUG")
   -pool-size int
         Pool size for connections to tentacle service, 0 for no pool
 
 Advanced usage: tentacler [OPTIONS] <command> [command args] [...]
-        tentacler info                          List info from tentacled service
-.
-        tentacler start [tcp] [...]             Start and regist to tentacled se
-rvice.
+        tentacler info                          List info from tentacled service.
+        tentacler start [tcp] [...]             Start and regist to tentacled service.
         tentacler help                          Print help
         tentacler version                       Print tentacle version
 
