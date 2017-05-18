@@ -6,14 +6,15 @@ import (
 	"crypto/tls"
 	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
+	"github.com/jiusanzhou/tentacle/util"
 	"golang.org/x/net/proxy"
 	"net"
 	"net/http"
-	"runtime/debug"
 	"net/http/httputil"
 	"net/url"
-	"github.com/jiusanzhou/tentacle/util"
-	"fmt"
+	"runtime/debug"
+	"strings"
+	"github.com/valyala/fasthttp"
 )
 
 type HttpProxyListener struct {
@@ -103,6 +104,29 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 			// check username/password
 			// TODO: check username/password
+			if !auth(req) {
+				httpConn.Warn("Auth failed")
+
+				resp := fasthttp.AcquireResponse()
+				buf := fasthttp.AcquireByteBuffer()
+
+				resp.SetBody(unauthorizedMsg)
+				resp.SetStatusCode(407)
+				resp.Header.Set("server", "Tentacle")
+				resp.WriteTo(buf)
+
+				// for https
+				//if req.Method == "CONNECT" {
+				//	httpConn.Write(util.S2b("HTTP/1.0 200 OK\r\n\r\n"))
+				//}
+
+				httpConn.Write(buf.B)
+
+				fasthttp.ReleaseResponse(resp)
+				fasthttp.ReleaseByteBuffer(buf)
+
+				return
+			}
 
 			// https://jdebp.eu./FGA/web-proxy-connection-header.html
 			req.Header.Del("Proxy-Connection")
@@ -123,8 +147,8 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 				// TODO: use conenction pool
 				// connect to remote with socket proxy
-				remoteConn, err:= dialer.Dial("tcp", host)
-				if err!=nil{
+				remoteConn, err := dialer.Dial("tcp", host)
+				if err != nil {
 					httpConn.Warn("connect to [https]%s error, %v.", host, err)
 					return
 				}
@@ -140,8 +164,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				wrapedHttpConn.Close()
 				wrapedRemoteConn.Close()
 
-
-			}else{
+			} else {
 				// handle http
 
 				// get socket proxy from pool
@@ -149,14 +172,14 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 				// send through socket proxy
 				resp, err := socketProxyClient.Do(req)
-				if err!=nil{
+				if err != nil {
 					httpConn.Warn("send request through socket proxy error, %v", err)
 					return
 				}
 
 				// copy proxy conn and client conn
 				rawResp, err := httputil.DumpResponse(resp, true)
-				if err!=nil{
+				if err != nil {
 					httpConn.Warn("dumps response error, %v", err)
 					return
 				}
@@ -165,4 +188,46 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 		}(c)
 	}
 
+}
+
+var proxyAuthorizationHeader = "Proxy-Authorization"
+var unauthorizedMsg = []byte("407 Proxy Authentication Required")
+
+var Authorization string
+
+func auth(req *http.Request) bool {
+
+	if Authorization == "" {
+		return true
+	}
+
+	authheader := strings.SplitN(req.Header.Get(proxyAuthorizationHeader), " ", 2)
+	req.Header.Del(proxyAuthorizationHeader)
+	if len(authheader) != 2 || authheader[0] != "Basic" {
+		return false
+	}
+
+	if authheader[1] != Authorization {
+		controlManager.Warn("Should be %s, but is %s", Authorization, authheader[1])
+		return false
+	} else {
+		return true
+	}
+
+	//userpassraw, err := base64.StdEncoding.DecodeString(authheader[1])
+	//if err != nil {
+	//	return false
+	//}
+	//userpass := strings.SplitN(string(userpassraw), ":", 2)
+	//if len(userpass) != 2 {
+	//	return false
+	//}
+	//
+	//if Authorization == "" {
+	//	return true
+	//} else {
+	//
+	//}
+	//
+	//return f(userpass[0], userpass[1])
 }

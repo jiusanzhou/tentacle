@@ -16,6 +16,9 @@ type Options struct {
 	loglevel    string
 
 	redialInterval time.Duration
+
+	username string
+	password string
 }
 
 func parseArgs() *Options {
@@ -27,6 +30,9 @@ func parseArgs() *Options {
 	tlsKey := flag.String("tlsKey", "", "Path to a TLS key file")
 	logto := flag.String("log", "stdout", "Write log messages to this file. 'stdout' and 'none' have special meanings")
 	loglevel := flag.String("log-level", "INFO", "The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
+
+	user := flag.String("user", "", "Http proxy username")
+	pass := flag.String("pass", "", "Http proxy password")
 
 	redialInterval := flag.Duration("redial-interval", 1*time.Minute, "Redial interval for each tentacler")
 	flag.Parse()
@@ -40,6 +46,9 @@ func parseArgs() *Options {
 		tlsKey:      *tlsKey,
 		logto:       *logto,
 		loglevel:    *loglevel,
+
+		username: *user,
+		password: *pass,
 
 		redialInterval: *redialInterval,
 	}

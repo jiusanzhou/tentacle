@@ -13,6 +13,7 @@ import (
 	// for debug pprof
 	// _ "net/http/pprof"
 	// "net/http"
+	"encoding/base64"
 )
 
 const (
@@ -33,6 +34,11 @@ func Main() {
 
 	// parse options
 	opts = parseArgs()
+
+	// init http proxy author
+	if opts.password != "" || opts.username != "" {
+		Authorization = base64.StdEncoding.EncodeToString(util.S2b(opts.username + ":" + opts.password))
+	}
 
 	// init logging
 	log.LogTo(opts.logto, opts.loglevel)
