@@ -12,6 +12,8 @@ import (
 	"runtime/debug"
 	"net/http/httputil"
 	"net/url"
+	"github.com/jiusanzhou/tentacle/util"
+	"fmt"
 )
 
 type HttpProxyListener struct {
@@ -80,8 +82,6 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				}
 			}()
 
-			// do http handle
-
 			// get http request object
 			req, err := http.ReadRequest(bufio.NewReader(httpConn))
 
@@ -101,6 +101,9 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			req.RequestURI = ""
 			req.URL = u
 
+			// check username/password
+			// TODO: check username/password
+
 			// https://jdebp.eu./FGA/web-proxy-connection-header.html
 			req.Header.Del("Proxy-Connection")
 			req.Header.Del("Proxy-Authenticate")
@@ -113,36 +116,52 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			//   be communicated by proxies over further connections.
 			req.Header.Del("Connection")
 
-			// TODO: how to deal with https
-			if req.URL.Scheme == "https" {
-				//connectReq := &http.Request{
-				//	Method: "CONNECT",
-				//	URL:    &url.URL{Opaque: addr},
-				//	Host:   req.URL.Host,
-				//	Header: make(http.Header),
-				//}
-				// socketProxyClient = tls.Client(socketProx, nil)
-				// socketProxyClient.
+			if req.Method == "CONNECT" {
+				// handle https
 
+				host := u.String()
+
+				// TODO: use conenction pool
+				// connect to remote with socket proxy
+				remoteConn, err:= dialer.Dial("tcp", host)
+				if err!=nil{
+					httpConn.Warn("connect to [https]%s error, %v.", host, err)
+					return
+				}
+
+				wrapedRemoteConn := conn.Wrap(remoteConn, "remote")
+				wrapedHttpConn := conn.Wrap(httpConn, "http")
+
+				httpConn.Write(util.S2b("HTTP/1.0 200 OK\r\n\r\n"))
+
+				// copy data
+				conn.Join(wrapedRemoteConn, wrapedHttpConn)
+
+				wrapedHttpConn.Close()
+				wrapedRemoteConn.Close()
+
+
+			}else{
+				// handle http
+
+				// get socket proxy from pool
+				// TODO: use connection pool
+
+				// send through socket proxy
+				resp, err := socketProxyClient.Do(req)
+				if err!=nil{
+					httpConn.Warn("send request through socket proxy error, %v", err)
+					return
+				}
+
+				// copy proxy conn and client conn
+				rawResp, err := httputil.DumpResponse(resp, true)
+				if err!=nil{
+					httpConn.Warn("dumps response error, %v", err)
+					return
+				}
+				httpConn.Write(rawResp)
 			}
-
-			// get socket proxy from pool
-			// TODO: use connection pool
-
-			// send through socket proxy
-			resp, err := socketProxyClient.Do(req)
-			if err!=nil{
-				httpConn.Warn("send request through socket proxy error, %v", err)
-				return
-			}
-
-			// copy proxy conn and client conn
-			rawResp, err := httputil.DumpResponse(resp, true)
-			if err!=nil{
-				httpConn.Warn("dumps response error, %v", err)
-				return
-			}
-			httpConn.Write(rawResp)
 		}(c)
 	}
 
