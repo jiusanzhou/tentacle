@@ -48,7 +48,7 @@ func ParseArgs() (opts *Options, err error) {
 
 	loglevel := flag.String(
 		"log-level",
-		"DEBUG",
+		"INFO",
 		"The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
 
 	poolsize := flag.Int(

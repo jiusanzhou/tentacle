@@ -26,7 +26,7 @@ func parseArgs() *Options {
 	tlsCrt := flag.String("tlsCrt", "", "Path to a TLS certificate file")
 	tlsKey := flag.String("tlsKey", "", "Path to a TLS key file")
 	logto := flag.String("log", "stdout", "Write log messages to this file. 'stdout' and 'none' have special meanings")
-	loglevel := flag.String("log-level", "DEBUG", "The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
+	loglevel := flag.String("log-level", "INFO", "The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
 
 	redialInterval := flag.Duration("redial-interval", 1*time.Minute, "Redial interval for each tentacler")
 	flag.Parse()
