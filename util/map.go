@@ -56,7 +56,9 @@ func (m *StringMap) Del(k string) bool {
 	if m.Get(k) == nil {
 		return false
 	} else {
+		m.Lock()
 		delete(m.s, k)
+		m.Unlock()
 		return true
 	}
 }
