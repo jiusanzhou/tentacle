@@ -39,6 +39,13 @@ type Tunnel struct {
 
 func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 
+	var clientConn conn.Conn
+
+	defer func(){
+		clientConn.Close()
+		tunnelConn.Close()
+	}()
+
 	// first should set the remote connected
 
 	tunnelConn.SetDeadline(time.Time{})
@@ -46,7 +53,7 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	// get control
 
 	// get public conn
-	clientConn := controlManager.GetConn(regTunMsg.ReqId)
+	clientConn = controlManager.GetConn(regTunMsg.ReqId)
 	clientConn.SetDeadline(time.Time{})
 
 	if clientConn == nil {
@@ -58,8 +65,6 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	conn.Join(tunnelConn, clientConn)
 
 	controlManager.DelConn(regTunMsg.ReqId)
-	clientConn.Close()
-	tunnelConn.Close()
 
 	//if c := controlManager.GetControl(regTunMsg.ClientId); c != nil {
 	//	c.SetReady(regTunMsg.ReqId)

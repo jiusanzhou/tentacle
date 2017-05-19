@@ -148,6 +148,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				// TODO: use conenction pool
 				// connect to remote with socket proxy
 				remoteConn, err := dialer.Dial("tcp", host)
+
 				if err != nil {
 					httpConn.Warn("connect to [https]%s error, %v.", host, err)
 					return
@@ -156,13 +157,15 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				wrapedRemoteConn := conn.Wrap(remoteConn, "remote")
 				wrapedHttpConn := conn.Wrap(httpConn, "http")
 
+				defer func(){
+					wrapedHttpConn.Close()
+					wrapedRemoteConn.Close()
+				}()
+
 				httpConn.Write(util.S2b("HTTP/1.0 200 OK\r\n\r\n"))
 
 				// copy data
 				conn.Join(wrapedRemoteConn, wrapedHttpConn)
-
-				wrapedHttpConn.Close()
-				wrapedRemoteConn.Close()
 
 			} else {
 				// handle http
