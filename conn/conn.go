@@ -1,14 +1,14 @@
 package conn
 
 import (
-	"github.com/jiusanzhou/tentacle/log"
-	"github.com/jiusanzhou/tentacle/util"
 	"crypto/tls"
 	"fmt"
+	"github.com/jiusanzhou/tentacle/log"
+	"github.com/jiusanzhou/tentacle/util"
+	"io"
 	"math/rand"
 	"net"
 	"sync"
-	"io"
 )
 
 // Connection for controlling and data transportation.
@@ -30,7 +30,7 @@ type loggedConn struct {
 
 type Listener struct {
 	net.Addr
-	Conns     chan *loggedConn
+	Conns chan *loggedConn
 }
 
 func wrapConn(conn net.Conn, typ string) *loggedConn {
@@ -54,8 +54,8 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 	}
 
 	l = &Listener{
-		Addr:      listener.Addr(),
-		Conns:     make(chan *loggedConn),
+		Addr:  listener.Addr(),
+		Conns: make(chan *loggedConn),
 	}
 
 	go func() {
@@ -131,9 +131,8 @@ func (c *loggedConn) SetType(typ string) {
 	c.Info("Renamed connection %s", oldId)
 }
 
-
 func pipe(to Conn, from Conn, bytesCopied *int64, wait sync.WaitGroup) {
-	defer func(){
+	defer func() {
 		to.Close()
 		from.Close()
 		wait.Done()
@@ -148,8 +147,13 @@ func pipe(to Conn, from Conn, bytesCopied *int64, wait sync.WaitGroup) {
 	}
 }
 
-func PipeConn(to, from Conn, wait sync.WaitGroup){
+func PipeConn(to, from Conn) {
 	buf := util.GlobalLeakyBuf.Get()
+	defer func() {
+		util.GlobalLeakyBuf.Put(buf)
+		// wait.Done()
+	}()
+
 	for {
 		n, err := from.Read(buf)
 		// read may return EOF with n > 0
@@ -165,27 +169,20 @@ func PipeConn(to, from Conn, wait sync.WaitGroup){
 			// Always "use of closed network connection", but no easy way to
 			// identify this specific error. So just leave the error along for now.
 			// More info here: https://code.google.com/p/go/issues/detail?id=4373
-			/*
-				if bool(Debug) && err != io.EOF {
-					Debug.Println("read:", err)
-				}
-			*/
 			break
 		}
 	}
-	util.GlobalLeakyBuf.Put(buf)
-	wait.Done()
 }
 
 func Join(c Conn, c2 Conn) {
-	var wait sync.WaitGroup
-	wait.Add(2)
-	go PipeConn(c, c2, wait)
-	go PipeConn(c2, c, wait)
+	// var wait sync.WaitGroup
+	// wait.Add(2)
+	go PipeConn(c, c2)
+	go PipeConn(c2, c)
 
 	// c.Close()
 	// c2.Close()
 
 	c.Info("Joined with connection %s", c2.Id())
-	wait.Wait()
+	// wait.Wait()
 }

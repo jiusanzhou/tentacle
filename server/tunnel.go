@@ -62,7 +62,8 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	}
 
 	// pipe copy data from public and tunnel
-	conn.Join(tunnelConn, clientConn)
+	// conn.Join(tunnelConn, clientConn)
+	conn.Join(clientConn, tunnelConn)
 
 	controlManager.DelConn(regTunMsg.ReqId)
 
