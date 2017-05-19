@@ -83,6 +83,8 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				}
 			}()
 
+			// TODO: change to read []bytes of conn, connect to tunnel directly
+
 			// get http request object
 			req, err := http.ReadRequest(bufio.NewReader(httpConn))
 
@@ -162,7 +164,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 					wrapedRemoteConn.Close()
 				}()
 
-				httpConn.Write(util.S2b("HTTP/1.0 200 OK\r\n\r\n"))
+				httpConn.Write(util.S2b("HTTP/1.0 200 Connection Established\r\n\r\n"))
 
 				// copy data
 				conn.Join(wrapedRemoteConn, wrapedHttpConn)
@@ -191,6 +193,12 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 		}(c)
 	}
 
+}
+
+func handleHttpConn(httpConn conn.Conn) {
+	req := fasthttp.AcquireRequest()
+	buf := fasthttp.AcquireByteBuffer()
+	httpConn.Read(buf.B)
 }
 
 var proxyAuthorizationHeader = "Proxy-Authorization"
