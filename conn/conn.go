@@ -177,12 +177,12 @@ func PipeConn(to, from Conn) {
 func Join(c Conn, c2 Conn) {
 	// var wait sync.WaitGroup
 	// wait.Add(2)
+
+	c.Info("Joined with connection %s", c2.Id())
 	go PipeConn(c, c2)
-	go PipeConn(c2, c)
+	PipeConn(c2, c)
 
 	// c.Close()
 	// c2.Close()
-
-	c.Info("Joined with connection %s", c2.Id())
 	// wait.Wait()
 }
