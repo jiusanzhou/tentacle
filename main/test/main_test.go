@@ -1,23 +1,23 @@
 package main
 
 import (
-	"net/http"
-	"testing"
-	"math/rand"
-	"sync"
 	"fmt"
-	"time"
-	"golang.org/x/net/proxy"
-	"net"
 	"github.com/jiusanzhou/tentacle/server"
+	"golang.org/x/net/proxy"
+	"math/rand"
+	"net"
+	"net/http"
+	"sync"
+	"testing"
+	"time"
 )
 
 func Socks5Client(addr string, auth ...*proxy.Auth) (client *http.Client, err error) {
 
 	dialer, err := proxy.SOCKS5("tcp", addr,
 		nil,
-		&net.Dialer {
-			Timeout: 30 * time.Second,
+		&net.Dialer{
+			Timeout:   30 * time.Second,
 			KeepAlive: 30 * time.Second,
 		},
 	)
@@ -26,16 +26,15 @@ func Socks5Client(addr string, auth ...*proxy.Auth) (client *http.Client, err er
 	}
 
 	transport := &http.Transport{
-		Proxy: nil,
-		Dial: dialer.Dial,
+		Proxy:               nil,
+		Dial:                dialer.Dial,
 		TLSHandshakeTimeout: 10 * time.Second,
 	}
 
-	client = &http.Client { Transport: transport }
+	client = &http.Client{Transport: transport}
 
 	return
 }
-
 
 var (
 	html_urls = []string{
@@ -62,7 +61,7 @@ func get(client *http.Client, url string) {
 	fmt.Printf("finished %s\n", url)
 }
 
-func run(){
+func run() {
 	server.Main()
 }
 
@@ -74,12 +73,12 @@ func BenchmarkHtml(b *testing.B) {
 	// go run()
 	// time.Sleep(5*time.Second)
 	wg := sync.WaitGroup{}
-	for i := 0; i<b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		wg.Add(1)
 		client, _ := Socks5Client("127.0.0.1:8888")
 		fmt.Println("start a goroutin")
-		go func(){
-			for n:=0; n<b.N; n++{
+		go func() {
+			for n := 0; n < b.N; n++ {
 				get(client, html_urls[rand.Intn(len(html_urls))])
 			}
 			wg.Done()
@@ -91,12 +90,12 @@ func BenchmarkHtml(b *testing.B) {
 
 func BenchmarkImg(b *testing.B) {
 	wg := sync.WaitGroup{}
-	for i := 0; i<b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		wg.Add(1)
 		client, _ := Socks5Client("127.0.0.1:8888")
 		fmt.Println("start a goroutin")
-		go func(){
-			for n:=0; n<b.N; n++{
+		go func() {
+			for n := 0; n < b.N; n++ {
 				get(client, img_urls[rand.Intn(len(img_urls))])
 			}
 			wg.Done()
@@ -108,12 +107,12 @@ func BenchmarkImg(b *testing.B) {
 
 func BenchmarkBinary(b *testing.B) {
 	wg := sync.WaitGroup{}
-	for i := 0; i<b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		wg.Add(1)
 		client, _ := Socks5Client("127.0.0.1:8888")
 		fmt.Println("start a goroutin")
-		go func(){
-			for n:=0; n<b.N; n++{
+		go func() {
+			for n := 0; n < b.N; n++ {
 				get(client, binary_urls[rand.Intn(len(binary_urls))])
 			}
 			wg.Done()
