@@ -323,7 +323,7 @@ func (ctl *Control) Run() {
 				go func() {
 					ctl.Info(msg)
 					for _, k := range ctl.remoteConns.GetKeys() {
-						if c := ctl.remoteConns.Get(k).(*RemoteConn); c != nil {
+						if c := ctl.remoteConns.Get(k).(conn.Conn); c != nil {
 							c.Close()
 						}
 					}
