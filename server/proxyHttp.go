@@ -196,9 +196,9 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 }
 
 func handleHttpConn(httpConn conn.Conn) {
-	req := fasthttp.AcquireRequest()
-	buf := fasthttp.AcquireByteBuffer()
-	httpConn.Read(buf.B)
+	// req := fasthttp.AcquireRequest()
+	// buf := fasthttp.AcquireByteBuffer()
+	// httpConn.Read(buf.B)
 }
 
 var proxyAuthorizationHeader = "Proxy-Authorization"
