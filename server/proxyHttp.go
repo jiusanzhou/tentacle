@@ -167,7 +167,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				httpConn.Write(util.S2b("HTTP/1.0 200 Connection Established\r\n\r\n"))
 
 				// copy data
-				conn.Join(wrapedRemoteConn, wrapedHttpConn)
+				conn.Join(wrapedHttpConn, wrapedRemoteConn)
 
 			} else {
 				// handle http
