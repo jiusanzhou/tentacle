@@ -147,7 +147,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 				host := u.String()
 
-				// TODO: use conenction pool
+				// TODO: use connection pool
 				// connect to remote with socket proxy
 				remoteConn, err := dialer.Dial("tcp", host)
 
@@ -164,7 +164,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 					wrapedRemoteConn.Close()
 				}()
 
-				httpConn.Write(util.S2b("HTTP/1.0 200 Connection Established\r\n\r\n"))
+				httpConn.Write(util.S2b("HTTP/1.1 200 Connection Established\r\n\r\n"))
 
 				// copy data
 				conn.Join(wrapedHttpConn, wrapedRemoteConn)

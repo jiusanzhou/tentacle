@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e56609ac-5d03-4f0c-9632-8913e12323c9" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/Makefile" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/README.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/circle.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/coverall.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_darwin_cgo.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_darwin_nocgo.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_freebsd_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/cpu_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/expected/freebsd/1cpu_2core.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/expected/freebsd/1cpu_4core.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/cpu/expected/freebsd/2cpu_4core.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_darwin_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_darwin_arm64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_freebsd_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_freebsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_openbsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_unix.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/disk_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/types_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/disk/types_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/doc.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/docker/docker.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/docker/docker_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/docker/docker_linux_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/docker/docker_notlinux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_darwin_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_darwin_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_freebsd_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_freebsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_freebsd_arm.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_arm.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_arm64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_ppc64le.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_s390x.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_linux_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_openbsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/host_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/types_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/types_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/types_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/host/types_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/binary.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_unix.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/internal/common/common_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/load/load_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_darwin_cgo.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_darwin_nocgo.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_darwin_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_openbsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/mem_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mem/types_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/mktypes.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_darwin_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_linux_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_unix.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/net/net_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/expected/darwin/%2Fbin%2Fps-ax-opid_fail" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_darwin_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_darwin_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_fallback.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_freebsd_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_freebsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_freebsd_arm.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_linux.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_openbsd_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_posix.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_posix_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_windows.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_windows_386.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/process_windows_amd64.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/types_darwin.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/types_freebsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/process/types_openbsd.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/v2migration.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/shirou/gopsutil/windows_memo.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/0doc.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/binc.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/cbor.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/cbor_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/codec_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/codecgen/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/codecgen/gen.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/codecgen/z.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/codecgen_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/decode.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/decode_go.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/decode_go14.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/encode.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/fast-path.generated.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/fast-path.go.tmpl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/fast-path.not.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen-dec-array.go.tmpl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen-dec-map.go.tmpl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen-helper.generated.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen-helper.go.tmpl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen.generated.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen_15.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen_16.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/gen_17.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/helper.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/helper_internal.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/helper_not_unsafe.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/helper_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/helper_unsafe.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/json.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/msgpack.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/noop.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/prebuild.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/prebuild.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/py_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/rpc.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/simple.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/test-cbor-goldens.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/test.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/tests.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/time.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/codec/values_test.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/vendor/github.com/ugorji/go/msgpack.org.md" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/glide.yaml" afterPath="$PROJECT_DIR$/glide.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/proxyHttp.go" afterPath="$PROJECT_DIR$/server/proxyHttp.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/.travis.yml" afterPath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/ffjson/encoder.go" afterPath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/ffjson/encoder.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/inception/decoder.go" afterPath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/inception/decoder.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/tests/types/ff/everything.go" afterPath="$PROJECT_DIR$/vendor/github.com/pquerna/ffjson/tests/types/ff/everything.go" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DatabaseView">
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="tentacle" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go Application" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>tunnelListener</find>
+      <find>Conn</find>
+      <find>registerTunnel</find>
+      <find>NewControl</find>
+      <find>Writing</find>
+      <find>listeners</find>
+      <find>SetType</find>
+      <find>Rename</find>
+      <find>fmt.Print</find>
+      <find>TypeMap</find>
+      <find>NewStream</find>
+      <find>control recovering from failure</find>
+      <find>GetConn</find>
+      <find>Save</find>
+      <find>RemoteConn</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/client/control.go" />
+        <option value="$PROJECT_DIR$/server/mvc/controller.go" />
+        <option value="$PROJECT_DIR$/server/mvc/model.go" />
+        <option value="$PROJECT_DIR$/server/mvc/view.go" />
+        <option value="$PROJECT_DIR$/server/mvc/state.go" />
+        <option value="$PROJECT_DIR$/server/control.go" />
+        <option value="$PROJECT_DIR$/client/model.go" />
+        <option value="$PROJECT_DIR$/client/remote.go" />
+        <option value="$PROJECT_DIR$/client/mvc/state.go" />
+        <option value="$PROJECT_DIR$/server/proxy/socket.go" />
+        <option value="$PROJECT_DIR$/util/shutdown.go" />
+        <option value="$PROJECT_DIR$/msg/pack.go" />
+        <option value="$PROJECT_DIR$/main/proxy/proxy.go" />
+        <option value="$PROJECT_DIR$/msg/data.go" />
+        <option value="$PROJECT_DIR$/util/errors.go" />
+        <option value="$PROJECT_DIR$/test.go" />
+        <option value="$PROJECT_DIR$/util/bytestring.go" />
+        <option value="$PROJECT_DIR$/main/test/main.go" />
+        <option value="$PROJECT_DIR$/msg/conn.go" />
+        <option value="$PROJECT_DIR$/proto/socket2http.go" />
+        <option value="$PROJECT_DIR$/main/tentacled/tentacled_test.go" />
+        <option value="$PROJECT_DIR$/main/test/main_test.go" />
+        <option value="$PROJECT_DIR$/server/proxySocket.go" />
+        <option value="$PROJECT_DIR$/conn/pipe.go" />
+        <option value="$PROJECT_DIR$/util/leakbuf.go" />
+        <option value="$PROJECT_DIR$/msg/msg.go" />
+        <option value="$PROJECT_DIR$/util/command.go" />
+        <option value="$PROJECT_DIR$/server/manager.go" />
+        <option value="$PROJECT_DIR$/client/main.go" />
+        <option value="$PROJECT_DIR$/server/controller.go" />
+        <option value="$PROJECT_DIR$/client/config.yaml" />
+        <option value="$PROJECT_DIR$/main/tentacler/tentacler.yaml" />
+        <option value="$PROJECT_DIR$/client/config.go" />
+        <option value="$PROJECT_DIR$/glide.yaml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/Makefile" />
+        <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/README.mediawiki" />
+        <option value="$PROJECT_DIR$/main/report/main.go" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/docs/README.mediawiki" />
+        <option value="$PROJECT_DIR$/docs/README_ZH.md" />
+        <option value="$PROJECT_DIR$/LICENSE" />
+        <option value="$PROJECT_DIR$/client/cli.go" />
+        <option value="$PROJECT_DIR$/server/cli.go" />
+        <option value="$PROJECT_DIR$/server/main.go" />
+        <option value="$PROJECT_DIR$/client/controller.go" />
+        <option value="$PROJECT_DIR$/util/map.go" />
+        <option value="$PROJECT_DIR$/server/tunnel.go" />
+        <option value="$PROJECT_DIR$/conn/conn.go" />
+        <option value="$PROJECT_DIR$/server/proxyHttp.go" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1912" />
+    <option name="height" value="1012" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tentacle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tentacle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../eagle" />
+    <property name="js.eslint.eslintPackage" value="" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="GO_FMT" value="false" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Go Single File.go run main.go">
+    <configuration default="false" name="Build tentacled.go and run" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main/tentacled/tentacled.go" />
+      <kind value="FILE" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BenchmarkAll in tentacled_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$/main/tentacled" />
+      <framework value="gobench" />
+      <kind value="PACKAGE" />
+      <package value="github.com/jiusanzhou/tentacle/main/tentacled" />
+      <pattern value="^BenchmarkAll$" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BenchmarkHtml in main_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$/main/test" />
+      <framework value="gobench" />
+      <kind value="PACKAGE" />
+      <package value="github.com/jiusanzhou/tentacle/main/test" />
+      <pattern value="^BenchmarkHtml$" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BenchmarkImg in main_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$/main/test" />
+      <framework value="gobench" />
+      <kind value="PACKAGE" />
+      <package value="github.com/jiusanzhou/tentacle/main/test" />
+      <pattern value="^BenchmarkImg$" />
+      <method />
+    </configuration>
+    <configuration default="false" name="go run main.go" type="GoRunFileConfiguration" factoryName="Go Single File" temporary="true">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main/report/main.go" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GoRunFileConfiguration" factoryName="Go Single File">
+      <module name="" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="Build tentacler.go and run" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="tentacle" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main/tentacler/tentacler.go" />
+      <kind value="FILE" />
+      <method />
+    </configuration>
+    <list size="6">
+      <item index="0" class="java.lang.String" itemvalue="Go Application.Build tentacler.go and run" />
+      <item index="1" class="java.lang.String" itemvalue="Go Application.Build tentacled.go and run" />
+      <item index="2" class="java.lang.String" itemvalue="Go Test.BenchmarkAll in tentacled_test.go" />
+      <item index="3" class="java.lang.String" itemvalue="Go Test.BenchmarkHtml in main_test.go" />
+      <item index="4" class="java.lang.String" itemvalue="Go Test.BenchmarkImg in main_test.go" />
+      <item index="5" class="java.lang.String" itemvalue="Go Single File.go run main.go" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Go Single File.go run main.go" />
+        <item index="1" class="java.lang.String" itemvalue="Go Test.BenchmarkImg in main_test.go" />
+        <item index="2" class="java.lang.String" itemvalue="Go Test.BenchmarkHtml in main_test.go" />
+        <item index="3" class="java.lang.String" itemvalue="Go Test.BenchmarkAll in tentacled_test.go" />
+        <item index="4" class="java.lang.String" itemvalue="Go Application.Build tentacled.go and run" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="BenchmarkAll_in_tentacled_test_go - 2017.05.12 at 13h 09m 18s.xml">
+      <configuration name="BenchmarkAll in tentacled_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="BenchmarkHtml_in_main_test_go - 2017.05.15 at 10h 56m 27s.xml">
+      <configuration name="BenchmarkHtml in main_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="BenchmarkImg_in_main_test_go - 2017.05.15 at 10h 56m 54s.xml">
+      <configuration name="BenchmarkImg in main_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="BenchmarkImg_in_main_test_go - 2017.05.15 at 11h 05m 03s.xml">
+      <configuration name="BenchmarkImg in main_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="BenchmarkImg_in_main_test_go - 2017.05.15 at 11h 23m 12s.xml">
+      <configuration name="BenchmarkImg in main_test.go" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1912" height="1012" extended-state="0" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18829113" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11640798" sideWeight="0.2885021" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51995564" sideWeight="0.4957806" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2172949" sideWeight="0.7114979" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18070954" sideWeight="0.8090717" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296146" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Create pipe line package." />
+    <MESSAGE value="Init project layout" />
+    <MESSAGE value="Add glide lock file" />
+    <MESSAGE value="Add encrypt fie&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add encrypt fie&#10;" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/util/id.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/tentacled/tentacled.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="7" lean-forward="false" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/broadcast.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="15" column="9" lean-forward="true" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/bytestring.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="11" lean-forward="true" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/test/main.go" />
+    <entry file="file://$PROJECT_DIR$/msg/data.go" />
+    <entry file="file://$PROJECT_DIR$/tunnel/pipe.go" />
+    <entry file="file://$PROJECT_DIR$/tunnel/tunnel.go" />
+    <entry file="file://$PROJECT_DIR$/store/store.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/proto/tcp.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="47" lean-forward="true" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/proto/http.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conn/pipe.go" />
+    <entry file="file://$PROJECT_DIR$/util/leakbuf.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="42" column="16" lean-forward="true" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/test/main_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="30" column="54" lean-forward="true" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/config.yaml" />
+    <entry file="file://$PROJECT_DIR$/main/tentacler/tentacler.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="16" lean-forward="true" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="21" column="50" lean-forward="true" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/command.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="31" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/tentacled/tentacled_test.go" />
+    <entry file="file://$PROJECT_DIR$/main/proxy/proxy.go" />
+    <entry file="file://$PROJECT_DIR$/util/sys.go" />
+    <entry file="file://$PROJECT_DIR$/proto/socket2http.go" />
+    <entry file="file://$PROJECT_DIR$/glide.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="3" lean-forward="false" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/manager.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="47" column="23" lean-forward="true" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.mediawiki" />
+    <entry file="file://$PROJECT_DIR$/main/report/main.go" />
+    <entry file="file://$PROJECT_DIR$/docs/README.mediawiki">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="36" lean-forward="true" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/README_ZH.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="805">
+            <caret line="62" column="10" lean-forward="true" selection-start-line="62" selection-start-column="10" selection-end-line="62" selection-end-column="10" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="23">
+            <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/version/version.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/logger.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1403">
+          <caret line="64" column="17" lean-forward="true" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/remote.go" />
+    <entry file="file://$PROJECT_DIR$/server/controller.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="634">
+          <caret line="302" column="42" lean-forward="true" selection-start-line="302" selection-start-column="42" selection-end-line="302" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/map.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/tunnel.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-79">
+          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conn/conn.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2592">
+          <caret line="181" column="14" lean-forward="false" selection-start-line="181" selection-start-column="14" selection-end-line="181" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/controller.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="283" column="35" lean-forward="true" selection-start-line="283" selection-start-column="35" selection-end-line="283" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/cli.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="713">
+          <caret line="34" column="29" lean-forward="false" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="667">
+          <caret line="43" column="44" lean-forward="false" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/cli.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1219">
+          <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msg/msg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="943">
+          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msg/pack.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="16" column="42" lean-forward="true" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+          <folding>
+            <element signature="e#13#87#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/msg/conn.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-414">
+          <caret line="20" column="32" lean-forward="false" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/proxySocket.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1334">
+          <caret line="90" column="44" lean-forward="false" selection-start-line="90" selection-start-column="44" selection-end-line="90" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/proxyHttp.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="108" column="39" lean-forward="false" selection-start-line="108" selection-start-column="39" selection-end-line="108" selection-end-column="39" />
+          <folding>
+            <element signature="e#16#312#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
