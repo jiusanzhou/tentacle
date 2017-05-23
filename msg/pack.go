@@ -1,14 +1,16 @@
 package msg
 
 import (
-	"github.com/pquerna/ffjson/ffjson"
 	"errors"
 	"fmt"
 	"reflect"
+	// "gopkg.in/vmihailenco/msgpack.v2"
+	"github.com/pquerna/ffjson/ffjson"
 )
 
 func unpack(buffer []byte, msgIn Message) (msg Message, err error) {
 	var env Envelope
+
 	if err = ffjson.Unmarshal(buffer, &env); err != nil {
 		return
 	}
@@ -41,7 +43,7 @@ func Unpack(buffer []byte) (msg Message, err error) {
 }
 
 func Pack(payload interface{}) ([]byte, error) {
-	return ffjson.Marshal(struct {
+	return ffjson.Marshal(&struct {
 		Type    string
 		Payload interface{}
 	}{

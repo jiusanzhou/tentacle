@@ -2,19 +2,18 @@ package server
 
 import (
 	"bufio"
-	"context"
 	"crypto/tls"
 	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
+	"github.com/jiusanzhou/tentacle/msg"
 	"github.com/jiusanzhou/tentacle/util"
-	"golang.org/x/net/proxy"
+	"github.com/valyala/fasthttp"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"runtime/debug"
 	"strings"
-	"github.com/valyala/fasthttp"
 )
 
 type HttpProxyListener struct {
@@ -59,25 +58,10 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 	log.Info("Listening for http proxy on %s", listener.Addr.String())
 
-	// TODO: add username/password supported
-	dialer, err := proxy.SOCKS5("tcp", opts.socketAddr, nil, proxy.Direct)
-	if err != nil {
-		return
-	}
-
-	httpTransport := &http.Transport{
-		DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
-			return dialer.Dial(network, address)
-		},
-	}
-	// fmt.Println(httpTransport)
-	socketProxyClient := &http.Client{Transport: httpTransport}
-
 	for c := range listener.Conns {
 		go func(httpConn conn.Conn) {
 			// don't crash on panics
 			defer func() {
-				httpConn.Close()
 				if r := recover(); r != nil {
 					httpConn.Info("httpHandler failed with error %v: %s", r, debug.Stack())
 				}
@@ -127,6 +111,8 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				fasthttp.ReleaseResponse(resp)
 				fasthttp.ReleaseByteBuffer(buf)
 
+				httpConn.Close()
+
 				return
 			}
 
@@ -142,63 +128,58 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			//   be communicated by proxies over further connections.
 			req.Header.Del("Connection")
 
+			// save conn with reqId to map
+			reqId := util.RandId(8)
+			controlManager.AddConn(reqId, httpConn)
+
+			// get a controller to proxy this request
+			ctl := controlManager.GetControlByRequestId(reqId)
+			if ctl == nil {
+				// socketConn.Write(util.S2b(BadGateway))
+				log.Error("Cann't Get control tunnel.")
+				return
+			}
+
 			if req.Method == "CONNECT" {
+
 				// handle https
 
-				host := u.String()
-
-				// TODO: use connection pool
-				// connect to remote with socket proxy
-				remoteConn, err := dialer.Dial("tcp", host)
-
-				if err != nil {
-					httpConn.Warn("connect to [https]%s error, %v.", host, err)
-					return
-				}
-
-				wrapedRemoteConn := conn.Wrap(remoteConn, "remote")
-				wrapedHttpConn := conn.Wrap(httpConn, "http")
-
-				defer func(){
-					wrapedHttpConn.Close()
-					wrapedRemoteConn.Close()
-				}()
+				ctl.Write(&msg.Dial{
+					ClientId: ctl.Id(),
+					ReqId:    reqId,
+					Addr:     u.String(),
+				})
 
 				httpConn.Write(util.S2b("HTTP/1.1 200 Connection Established\r\n\r\n"))
-
-				// copy data
-				conn.Join(wrapedHttpConn, wrapedRemoteConn)
-
 			} else {
+
 				// handle http
+				rawReq, err := httputil.DumpRequestOut(req, true)
 
-				// get socket proxy from pool
-				// TODO: use connection pool
-
-				// send through socket proxy
-				resp, err := socketProxyClient.Do(req)
 				if err != nil {
-					httpConn.Warn("send request through socket proxy error, %v", err)
+					httpConn.Error("Dump request error, %v.", err)
 					return
 				}
 
-				// copy proxy conn and client conn
-				rawResp, err := httputil.DumpResponse(resp, true)
-				if err != nil {
-					httpConn.Warn("dumps response error, %v", err)
-					return
+				// send the request to tunnel, how to do this?
+
+				host := u.Host
+				if !strings.Contains(host, ":") {
+					host = host + ":80"
 				}
-				httpConn.Write(rawResp)
+
+				ctl.Write(&msg.Dial{
+					ClientId: ctl.Id(),
+					ReqId:    reqId,
+					Addr:     host,
+					Data:     rawReq,
+				})
+
+				// we must close this http conn if we finished one request.
 			}
 		}(c)
 	}
 
-}
-
-func handleHttpConn(httpConn conn.Conn) {
-	// req := fasthttp.AcquireRequest()
-	// buf := fasthttp.AcquireByteBuffer()
-	// httpConn.Read(buf.B)
 }
 
 var proxyAuthorizationHeader = "Proxy-Authorization"

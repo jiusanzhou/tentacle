@@ -247,7 +247,7 @@ func (ctl *Control) handleCmd(m *msg.Cmd) {
 		if e == nil {
 			stdOut = append(stdOut, util.B2s(o))
 		} else {
-			stdOut = append(stdOut, "Command error: " + e.Error())
+			stdOut = append(stdOut, "Command error: "+e.Error())
 		}
 	}
 	ctl.Info("Command stdout: %v", stdOut)
@@ -259,6 +259,7 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 	// dial to the remote
 	remoteRawConn, err := net.Dial("tcp", m.Addr)
 	if err != nil {
+		ctl.Error("Dial to remote %s error, %v", m.Addr, err)
 		return
 	}
 	remoteConn := conn.Wrap(remoteRawConn, "remote")
@@ -268,6 +269,7 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 	// get tunnel connection
 	tunnelConn := ctl.GetTunnelConn()
 	if tunnelConn == nil {
+		ctl.Warn("Get tunnel conn error.")
 		return
 	}
 	defer tunnelConn.Close()
@@ -277,6 +279,16 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 		ClientId: ctl.id,
 		ReqId:    m.ReqId,
 	})
+
+	// if has data from dial msg
+	// we should send it to remote immediately
+	if len(m.Data) > 0 {
+		_, err := remoteConn.Write(m.Data)
+		if err != nil {
+			ctl.Error("Send data to remote error, %v", err)
+			return
+		}
+	}
 
 	// pipe copy data through those two connections
 	conn.Join(remoteConn, tunnelConn)

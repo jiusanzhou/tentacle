@@ -58,7 +58,7 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 		Conns: make(chan *loggedConn),
 	}
 
-	go func() {
+	go func(l *Listener) {
 		for {
 			rawCon, err := listener.Accept()
 			if err != nil {
@@ -74,7 +74,7 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 
 			l.Conns <- c
 		}
-	}()
+	}(l)
 	return
 }
 
@@ -147,15 +147,16 @@ func pipe(to Conn, from Conn, bytesCopied *int64, wait sync.WaitGroup) {
 	}
 }
 
-func PipeConn(to, from Conn) {
+func PipeConn(to, from Conn, wait *util.OnceDone) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
-		// wait.Done()
+		wait.Done()
 	}()
 
 	for {
 		n, err := from.Read(buf)
+		
 		// read may return EOF with n > 0
 		// should always process n > 0 bytes before handling error
 		if n > 0 {
@@ -165,6 +166,7 @@ func PipeConn(to, from Conn) {
 				break
 			}
 		}
+
 		if err != nil {
 			// Always "use of closed network connection", but no easy way to
 			// identify this specific error. So just leave the error along for now.
@@ -175,14 +177,18 @@ func PipeConn(to, from Conn) {
 }
 
 func Join(c Conn, c2 Conn) {
-	// var wait sync.WaitGroup
-	// wait.Add(2)
+	wait := util.NewOnceDone()
+
+	// exit whatever witch exits
+	wait.Add(1)
+
+	go PipeConn(c, c2, wait)
+	go PipeConn(c2, c, wait)
+
+	wait.Wait()
 
 	c.Info("Joined with connection %s", c2.Id())
-	go PipeConn(c, c2)
-	PipeConn(c2, c)
 
 	// c.Close()
 	// c2.Close()
-	// wait.Wait()
 }

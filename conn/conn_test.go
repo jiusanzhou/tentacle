@@ -3,6 +3,8 @@ package conn
 import (
 	"testing"
 	"github.com/jiusanzhou/eagle/util"
+	"sync"
+	"time"
 	"fmt"
 )
 
@@ -77,4 +79,16 @@ func TestJoin(t *testing.T) {
 	for _, c := range conn2 {
 		c.Close()
 	}
+}
+
+func TestA(t *testing.T) {
+	var wait sync.WaitGroup
+	wait.Add(1)
+	go func(){
+		time.Sleep(5*time.Second)
+		wait.Done()
+	}()
+
+	wait.Wait()
+	fmt.Println("Done !")
 }

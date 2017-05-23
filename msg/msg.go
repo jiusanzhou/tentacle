@@ -48,7 +48,7 @@ type Auth struct {
 	// self ip
 	// or something else
 
-	ClientId  string // empty for new sessions
+	ClientId string // empty for new sessions
 }
 
 // A server responds to an Auth message with an
@@ -62,10 +62,10 @@ type Auth struct {
 // that is used to associate and authenticate future
 // proxy connections via the same field in RegProxy messages.
 type AuthResp struct {
-	Version   string
-	MmVersion string
-	ClientId  string
-	Error     string
+	Version    string
+	MmVersion  string
+	ClientId   string
+	Error      string
 	TunnelPort string
 }
 
@@ -80,11 +80,11 @@ type CmdResp struct {
 }
 
 type Dial struct {
-	ClientId   string
-	ReqId      string
-	RawAddr    []byte
-	Addr       string
-	TunnelPort string
+	ClientId string
+	ReqId    string
+	RawAddr  []byte
+	Addr     string
+	Data     []byte
 }
 
 type DialResp struct {
