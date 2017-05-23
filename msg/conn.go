@@ -11,7 +11,7 @@ func readMsgShared(c conn.Conn) (buffer []byte, err error) {
 	c.Debug("Waiting to read message")
 
 	var sz int64
-	err = binary.Read(c, binary.LittleEndian, &sz)
+	err = binary.Read(c, binary.BigEndian, &sz)
 	if err != nil {
 		return
 	}
