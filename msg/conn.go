@@ -57,15 +57,16 @@ func WriteMsg(c conn.Conn, msg interface{}) (err error) {
 	}
 
 	c.Debug("Writing message: %s", string(buffer))
+
+	// we should write BigEndian first
+
+	_, err = c.Write(buffer)
+
+	if err == nil {
+		return
+	}
+
 	err = binary.Write(c, binary.LittleEndian, int64(len(buffer)))
-
-	if err != nil {
-		return
-	}
-
-	if _, err = c.Write(buffer); err != nil {
-		return
-	}
 
 	return nil
 }
