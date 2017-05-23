@@ -11,13 +11,13 @@ func readMsgShared(c conn.Conn) (buffer []byte, err error) {
 	c.Debug("Waiting to read message")
 
 	var sz int64
-	err = binary.Read(c, binary.BigEndian, &sz)
+	err = binary.Read(c, binary.LittleEndian, &sz)
 	if err != nil {
 		return
 	}
 	c.Debug("Reading message with length: %d", sz)
 
-	buffer = make([]byte, sz)
+	buffer = make([]byte, sz) // ? This may be cause GC
 	n, err := c.Read(buffer)
 	c.Debug("Read message %s", buffer)
 
@@ -57,16 +57,15 @@ func WriteMsg(c conn.Conn, msg interface{}) (err error) {
 	}
 
 	c.Debug("Writing message: %s", string(buffer))
+	err = binary.Write(c, binary.LittleEndian, int64(len(buffer)))
 
-	// we should write BigEndian first
-
-	_, err = c.Write(buffer)
-
-	if err == nil {
+	if err != nil {
 		return
 	}
 
-	err = binary.Write(c, binary.LittleEndian, int64(len(buffer)))
+	if _, err = c.Write(buffer); err != nil {
+		return
+	}
 
 	return nil
 }
