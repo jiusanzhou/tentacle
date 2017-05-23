@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"net"
 	"sync"
+	"github.com/valyala/fasthttp"
 )
 
 // Connection for controlling and data transportation.
@@ -86,7 +87,7 @@ func Dial(addr, typ string, tlsCfg *tls.Config) (conn *loggedConn, err error) {
 
 	// Dial to the target address
 	var rawConn net.Conn
-	if rawConn, err = net.Dial("tcp", addr); err != nil {
+	if rawConn, err = fasthttp.Dial(addr); err != nil {
 		return
 	}
 
