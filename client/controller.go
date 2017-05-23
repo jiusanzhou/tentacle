@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"sync/atomic"
 	"time"
+	"github.com/valyala/fasthttp"
 )
 
 const (
@@ -101,7 +102,7 @@ func (ctl *Control) DelTunnel(k string) {
 }
 
 func (ctl *Control) getTunnelDirect() conn.Conn {
-	tunnelRawConn, err := net.Dial("tcp", ctl.tunnelAddr)
+	tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
 	if err != nil {
 		return nil
 	}
@@ -257,7 +258,7 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 
 	// TODO: use connections' pool
 	// dial to the remote
-	remoteRawConn, err := net.Dial("tcp", m.Addr)
+	remoteRawConn, err := fasthttp.Dial(m.Addr)
 	if err != nil {
 		ctl.Error("Dial to remote %s error, %v", m.Addr, err)
 		return
