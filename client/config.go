@@ -87,6 +87,10 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 	config.LogTo = opts.logto
 	config.Path = configPath
 
+	if opts.poolsize > 0 {
+		config.PoolSize = opts.poolsize
+	}
+
 	if config.PoolSize < 0 {
 		config.PoolSize = 0
 	}
