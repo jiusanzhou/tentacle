@@ -42,26 +42,27 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	var clientConn conn.Conn
 
 	defer func(){
-		clientConn.Close()
 		tunnelConn.Close()
 	}()
 
 	// first should set the remote connected
 
-	tunnelConn.SetDeadline(time.Time{})
+	// tunnelConn.SetDeadline(time.Time{})
 
 	// get control
 
 	// get public conn
 	clientConn = controlManager.GetConn(regTunMsg.ReqId)
-	clientConn.SetDeadline(time.Time{})
+	// clientConn.SetDeadline(time.Time{})
 
 	if clientConn == nil {
 		tunnelConn.Error("get client connection error.")
 		return
 	}
+	defer clientConn.Close()
 
 	// I can not close connection with http://loudong.360.cn/help/plan
+	// use a fake way to close
 
 	// pipe copy data from public and tunnel
 	conn.Join(tunnelConn, clientConn)
