@@ -26,9 +26,9 @@ const (
 type Configuration struct {
 	ServerAddr string `yaml:"server_addr,omitempty"`
 	AuthToken  string `yaml:"auth_token,omitempty"`
-	PoolSize   int    `yaml:"-"`
-	LogTo      string `yaml:"-"`
-	Path       string `yaml:"-"`
+	PoolSize   int    `yaml:"pool_size,omitempty"`
+	LogTo      string `yaml:"log_to,omitempty"`
+	Path       string `yaml:"path,omitempty"`
 	DialInfo   string `yaml:"dial_info,omitempty"`
 }
 

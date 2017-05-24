@@ -216,6 +216,12 @@ func (ctl *Control) control() {
 
 	ctl.tunnelAddr = fmt.Sprintf("%s:%s", ctl.serverHost, authResp.TunnelPort)
 
+	if ctl.config.PoolSize == 0 {
+		ctl.GetTunnelConn = ctl.getTunnelDirect
+	}else {
+		ctl.initTunnelPool()
+	}
+
 	ctl.id = authResp.ClientId
 	SaveCacheId(ctl.id)
 	ctl.serverVersion = authResp.MmVersion
@@ -409,31 +415,6 @@ func NewControl(config *Configuration) *Control {
 		configPath: config.Path,
 	}
 
-	if config.PoolSize == 0 {
-		ctl.GetTunnelConn = ctl.getTunnelDirect
-	} else {
-		var err error
-		max := ctl.config.PoolSize
-		min := int(math.Ceil(float64(max / 5)))
-		ctl.tunnelPool, err = conn.NewChannelPool(min, max,
-			func() (conn.Conn, error) {
-				tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
-				if err != nil {
-					return nil, err
-				}
-				tunnelConn := conn.Wrap(tunnelRawConn, "tunnel")
-				tunnelConn.SetDeadline(time.Time{})
-				return tunnelConn, nil
-			})
-		if err != nil {
-			ctl.Error("Init tunnel pool error, %v", err)
-			ctl.GetTunnelConn = ctl.getTunnelDirect
-		} else {
-			ctl.Info("Init tunnel pool with min %d, max %d", min, max)
-			ctl.GetTunnelConn = ctl.getTunnelFromPool
-		}
-	}
-
 	host, _, err := net.SplitHostPort(ctl.serverAddr)
 	if err != nil {
 		panic("server address error.")
@@ -443,4 +424,28 @@ func NewControl(config *Configuration) *Control {
 	ctl.id = GetCachedId()
 
 	return ctl
+}
+
+
+func (ctl *Control) initTunnelPool(){
+	var err error
+	max := ctl.config.PoolSize
+	min := int(math.Ceil(float64(max / 5)))
+	ctl.tunnelPool, err = conn.NewChannelPool(min, max,
+		func() (conn.Conn, error) {
+			tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
+			if err != nil {
+				return nil, err
+			}
+			tunnelConn := conn.Wrap(tunnelRawConn, "tunnel")
+			tunnelConn.SetDeadline(time.Time{})
+			return tunnelConn, nil
+		})
+	if err != nil {
+		ctl.Error("Init tunnel pool error, %v", err)
+		ctl.GetTunnelConn = ctl.getTunnelDirect
+	} else {
+		ctl.Info("Init tunnel pool with min %d, max %d", min, max)
+		ctl.GetTunnelConn = ctl.getTunnelFromPool
+	}
 }
