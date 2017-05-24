@@ -5,7 +5,6 @@ import (
 	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
 	"github.com/jiusanzhou/tentacle/msg"
-	"io"
 	"net"
 	"runtime/debug"
 	"time"
@@ -103,8 +102,8 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 			// and a tunnel can only
 			// service ONE request
 			for {
-				if msg, err := msg.ReadMsg(tunnelConn); err == nil {
-					switch m := msg.(type) {
+				if rawMsg, err := msg.ReadMsg(tunnelConn); err == nil {
+					switch m := rawMsg.(type) {
 					case *msg.RegTun:
 						NewTunnel(tunnelConn, m)
 					default:
