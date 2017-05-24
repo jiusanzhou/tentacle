@@ -8,12 +8,12 @@ import (
 	"github.com/jiusanzhou/tentacle/msg"
 	"github.com/jiusanzhou/tentacle/util"
 	"github.com/jiusanzhou/tentacle/version"
+	"github.com/valyala/fasthttp"
 	"math"
 	"net"
 	"runtime"
 	"sync/atomic"
 	"time"
-	"github.com/valyala/fasthttp"
 )
 
 const (
@@ -53,7 +53,7 @@ type Control struct {
 
 	authToken string
 
-	tunnelPool chan conn.Conn
+	tunnelPool conn.Pool
 
 	remoteConns *util.StringMap
 
@@ -112,7 +112,33 @@ func (ctl *Control) getTunnelDirect() conn.Conn {
 }
 
 func (ctl *Control) getTunnelFromPool() conn.Conn {
-	return nil
+
+	var err error
+	if ctl.tunnelPool == nil {
+		ps := ctl.config.PoolSize
+		ctl.tunnelPool, err = conn.NewChannelPool(int(math.Ceil(float64(ps/5))),
+			ps,
+			func() (conn.Conn, error) {
+				tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
+				if err != nil {
+					return nil, err
+				}
+				tunnelConn := conn.Wrap(tunnelRawConn, "tunnel")
+				tunnelConn.SetDeadline(time.Time{})
+				return tunnelConn, nil
+			})
+		if err != nil {
+			ctl.Error("Init tunnel pool error, %v", err)
+			return ctl.getTunnelDirect()
+		}
+	}
+
+	conn, err := ctl.tunnelPool.Get()
+	if err!=nil {
+		ctl.Error("Get connection from tunnel pool error, %v", err)
+	}
+
+	return conn
 }
 
 // Hearbeating to ensure our connection tentacled is still live
@@ -292,6 +318,7 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 	}
 
 	// pipe copy data through those two connections
+	// conn.Join(tunnelConn, remoteConn)
 	conn.Join(remoteConn, tunnelConn)
 
 	// remove remote and tunnel
@@ -398,7 +425,6 @@ func NewControl(config *Configuration) *Control {
 	if config.PoolSize == 0 {
 		ctl.GetTunnelConn = ctl.getTunnelDirect
 	} else {
-		ctl.tunnelPool = make(chan conn.Conn, config.PoolSize)
 		ctl.GetTunnelConn = ctl.getTunnelFromPool
 	}
 

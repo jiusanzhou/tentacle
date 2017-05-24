@@ -54,7 +54,7 @@ func ParseArgs() (opts *Options, err error) {
 	poolsize := flag.Int(
 		"pool-size",
 		0,
-		"Pool size for connections to tentacle service, 0 for no pool")
+		"Pool size(max, initial is 1/5) for connections to tentacle service, 0 for no pool")
 
 	flag.Parse()
 
