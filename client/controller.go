@@ -115,27 +115,14 @@ func (ctl *Control) getTunnelFromPool() conn.Conn {
 
 	var err error
 	if ctl.tunnelPool == nil {
-		ps := ctl.config.PoolSize
-		ctl.tunnelPool, err = conn.NewChannelPool(int(math.Ceil(float64(ps/5))),
-			ps,
-			func() (conn.Conn, error) {
-				tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
-				if err != nil {
-					return nil, err
-				}
-				tunnelConn := conn.Wrap(tunnelRawConn, "tunnel")
-				tunnelConn.SetDeadline(time.Time{})
-				return tunnelConn, nil
-			})
-		if err != nil {
-			ctl.Error("Init tunnel pool error, %v", err)
-			return ctl.getTunnelDirect()
-		}
+		ctl.Error("Tunnel pool is nil")
+		return ctl.getTunnelDirect()
 	}
 
 	conn, err := ctl.tunnelPool.Get()
-	if err!=nil {
+	if err != nil {
 		ctl.Error("Get connection from tunnel pool error, %v", err)
+		return ctl.getTunnelDirect()
 	}
 
 	return conn
@@ -425,7 +412,26 @@ func NewControl(config *Configuration) *Control {
 	if config.PoolSize == 0 {
 		ctl.GetTunnelConn = ctl.getTunnelDirect
 	} else {
-		ctl.GetTunnelConn = ctl.getTunnelFromPool
+		var err error
+		max := ctl.config.PoolSize
+		min := int(math.Ceil(float64(max / 5)))
+		ctl.tunnelPool, err = conn.NewChannelPool(min, max,
+			func() (conn.Conn, error) {
+				tunnelRawConn, err := fasthttp.Dial(ctl.tunnelAddr)
+				if err != nil {
+					return nil, err
+				}
+				tunnelConn := conn.Wrap(tunnelRawConn, "tunnel")
+				tunnelConn.SetDeadline(time.Time{})
+				return tunnelConn, nil
+			})
+		if err != nil {
+			ctl.Error("Init tunnel pool error, %v", err)
+			ctl.GetTunnelConn = ctl.getTunnelDirect
+		} else {
+			ctl.Info("Init tunnel pool with min %d, max %d", min, max)
+			ctl.GetTunnelConn = ctl.getTunnelFromPool
+		}
 	}
 
 	host, _, err := net.SplitHostPort(ctl.serverAddr)
