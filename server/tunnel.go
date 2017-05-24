@@ -64,8 +64,8 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	// I can not close connection with http://loudong.360.cn/help/plan
 
 	// pipe copy data from public and tunnel
-	// conn.Join(tunnelConn, clientConn)
-	conn.Join(clientConn, tunnelConn)
+	conn.Join(tunnelConn, clientConn)
+	// conn.Join(clientConn, tunnelConn)
 
 	controlManager.DelConn(regTunMsg.ReqId)
 

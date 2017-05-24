@@ -148,11 +148,11 @@ func pipe(to Conn, from Conn, bytesCopied *int64, wait sync.WaitGroup) {
 	}
 }
 
-func PipeConn(to, from Conn, wait *util.OnceDone) {
+func PipeConn(to, from Conn) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
-		wait.Done()
+		// wait.Done()
 	}()
 
 	for {
@@ -178,15 +178,16 @@ func PipeConn(to, from Conn, wait *util.OnceDone) {
 }
 
 func Join(c Conn, c2 Conn) {
-	wait := util.NewOnceDone()
+	// wait := util.NewOnceDone()
+	// var wait sync.WaitGroup
 
 	// exit whatever witch exits
-	wait.Add(1)
+	// wait.Add(2)
 
-	go PipeConn(c, c2, wait)
-	go PipeConn(c2, c, wait)
+	go PipeConn(c, c2)
+	PipeConn(c2, c)
 
-	wait.Wait()
+	// wait.Wait()
 
 	c.Info("Joined with connection %s", c2.Id())
 
