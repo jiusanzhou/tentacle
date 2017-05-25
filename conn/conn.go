@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/jiusanzhou/tentacle/log"
 	"github.com/jiusanzhou/tentacle/util"
+	"github.com/valyala/fasthttp"
 	"io"
 	"math/rand"
 	"net"
 	"sync"
-	"github.com/valyala/fasthttp"
 )
 
 // Connection for controlling and data transportation.
@@ -132,15 +132,18 @@ func (c *loggedConn) SetType(typ string) {
 	c.Info("Renamed connection %s", oldId)
 }
 
-func pipe(to Conn, from Conn, bytesCopied *int64, wait sync.WaitGroup) {
+func pipe(to Conn, from Conn, bytesCopied *int64, wait *sync.WaitGroup) {
+	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
+		util.GlobalLeakyBuf.Put(buf)
 		to.Close()
 		from.Close()
 		wait.Done()
 	}()
 
 	var err error
-	*bytesCopied, err = io.Copy(to, from)
+	// *bytesCopied, err = io.Copy(to, from)
+	*bytesCopied, err = io.CopyBuffer(to, from, buf)
 	if err != nil {
 		from.Warn("Copied %d bytes to %s before failing with error %v", *bytesCopied, to.Id(), err)
 	} else {
@@ -157,7 +160,7 @@ func PipeConn(to, from Conn) {
 
 	for {
 		n, err := from.Read(buf)
-		
+
 		// read may return EOF with n > 0
 		// should always process n > 0 bytes before handling error
 		if n > 0 {
@@ -177,20 +180,14 @@ func PipeConn(to, from Conn) {
 	}
 }
 
-func Join(c Conn, c2 Conn) {
-	// wait := util.NewOnceDone()
-	// var wait sync.WaitGroup
+func Join(c Conn, c2 Conn) (int64, int64) {
+	var wait sync.WaitGroup
 
-	// exit whatever witch exits
-	// wait.Add(2)
-
-	go PipeConn(c, c2)
-	PipeConn(c2, c)
-
-	// wait.Wait()
-
+	wait.Add(2)
+	var fromBytes, toBytes int64
+	go pipe(c, c2, &fromBytes, &wait)
+	go pipe(c2, c, &toBytes, &wait)
 	c.Info("Joined with connection %s", c2.Id())
-
-	// c.Close()
-	// c2.Close()
+	wait.Wait()
+	return fromBytes, toBytes
 }
