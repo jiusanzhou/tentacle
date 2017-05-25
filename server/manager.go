@@ -6,6 +6,7 @@ import (
 	"github.com/jiusanzhou/tentacle/util"
 	"math/rand"
 	"time"
+	"io"
 )
 
 // Manager maps a client ID to Control structures
@@ -44,6 +45,7 @@ func NewManager() *Manager {
 	}
 
 	go m.ResortControls()
+	go m.cleanDeathConn()
 
 	return m
 }
@@ -139,7 +141,7 @@ func (m *Manager) DelConn(requestId string) {
 	m.reqId2CliId.Del(requestId)
 }
 
-func (m *Manager) Resort(){
+func (m *Manager) Resort() {
 	m.resort <- struct{}{}
 }
 
@@ -176,4 +178,24 @@ func (m *Manager) sortControls() {
 
 	m.controlIds = ids
 	m.ctlCount = len(m.controlIds)
+}
+
+func (m *Manager) cleanDeathConn() {
+	//TODO: must find out why has those death connections
+	// clean death for something un-know reason
+	reap := time.NewTicker(10 * time.Second)
+	for {
+		<-reap.C
+
+		for _, k := range m.connections.GetKeys() {
+			conn := m.GetConn(k)
+			if conn != nil {
+				_, err := conn.Read([]byte{})
+				if err == io.EOF {
+					m.Info("Conn [%s] may be a death connection, close it.", conn.Id())
+					m.DelConn(k)
+				}
+			}
+		}
+	}
 }
