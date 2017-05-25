@@ -68,6 +68,7 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	// use a fake way to close
 
 	// pipe copy data from public and tunnel
+	// BUG: wait for a long time
 	conn.Join(tunnelConn, clientConn)
 	// conn.Join(clientConn, tunnelConn)
 

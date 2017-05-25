@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 	"fmt"
+	"net"
 )
 
 var (
@@ -91,4 +92,16 @@ func TestA(t *testing.T) {
 
 	wait.Wait()
 	fmt.Println("Done !")
+}
+
+func TestClose(t *testing.T) {
+	listener, err := net.Listen("tcp", addrs[0])
+	if err!=nil{
+		panic("Listen error")
+	}
+
+	go func(l net.Listener){
+
+	}(listener)
+
 }

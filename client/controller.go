@@ -312,6 +312,7 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 
 	// pipe copy data through those two connections
 	// conn.Join(tunnelConn, remoteConn)
+	// BUG: wait for a long time
 	conn.Join(remoteConn, tunnelConn)
 
 	// remove remote and tunnel

@@ -159,6 +159,21 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 				if err != nil {
 					httpConn.Error("Dump request error, %v.", err)
+
+					resp := fasthttp.AcquireResponse()
+					buf := fasthttp.AcquireByteBuffer()
+
+					resp.SetBody(proxyServerMsg)
+					resp.SetStatusCode(200)
+					resp.Header.Set("server", "Tentacle")
+					resp.WriteTo(buf)
+
+					httpConn.Write(buf.B)
+
+					fasthttp.ReleaseResponse(resp)
+					fasthttp.ReleaseByteBuffer(buf)
+
+					httpConn.Close()
 					return
 				}
 
@@ -185,6 +200,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 var proxyAuthorizationHeader = "Proxy-Authorization"
 var unauthorizedMsg = []byte("407 Proxy Authentication Required")
+var proxyServerMsg = []byte("This is a proxy server")
 
 var Authorization string
 
