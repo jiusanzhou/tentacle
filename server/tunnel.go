@@ -45,15 +45,13 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg msg.RegTun) {
 
 	// first should set the remote connected
 
-	// we have do this before
 	// tunnelConn.SetDeadline(time.Time{})
 
 	// get control
 
 	// get public conn
 	clientConn = controlManager.GetConn(regTunMsg.ReqId)
-
-	clientConn.SetDeadline(time.Time{})
+	// clientConn.SetDeadline(time.Time{})
 
 	if clientConn == nil {
 		tunnelConn.Error("get client connection error.")
@@ -94,7 +92,7 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 
 			// don't timeout after the initial read, tunnel heart beating will kill
 			// dead connections
-			tunnelConn.SetDeadline(time.Time{})
+			tunnelConn.SetReadDeadline(time.Time{})
 
 			// read messages from tunnel
 			// if we get a msg back
