@@ -189,8 +189,8 @@ func Join(c Conn, c2 Conn) (int64, int64) {
 	var fromBytes, toBytes int64
 	go pipe(c, c2, &fromBytes, &wait)
 	go pipe(c2, c, &toBytes, &wait)
-	c.Info("Joined with connection %s", c2.Id())
 	wait.Wait()
+	c.Info("Joined with connection %s [%s<->%s]", c2.Id(), c.RemoteAddr().String(), c2.RemoteAddr().String())
 	c.Close()
 	c2.Close()
 	return fromBytes, toBytes
