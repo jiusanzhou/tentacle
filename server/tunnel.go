@@ -37,31 +37,32 @@ type Tunnel struct {
 	closing int32
 }
 
-func NewTunnel(tunnelConn conn.Conn, regTunMsg msg.RegTun) {
+func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 
 	var clientConn conn.Conn
 
-	defer func(){
-		clientConn.Close()
-		tunnelConn.Close()
-	}()
+	// CAUTION: never close tunnel connection
 
 	// first should set the remote connected
 
-	tunnelConn.SetDeadline(time.Time{})
+	// we have do this before
+	// tunnelConn.SetDeadline(time.Time{})
 
 	// get control
 
 	// get public conn
 	clientConn = controlManager.GetConn(regTunMsg.ReqId)
+
 	clientConn.SetDeadline(time.Time{})
 
 	if clientConn == nil {
 		tunnelConn.Error("get client connection error.")
 		return
 	}
+	defer clientConn.Close()
 
 	// I can not close connection with http://loudong.360.cn/help/plan
+	// use a fake way to close
 
 	// pipe copy data from public and tunnel
 	conn.Join(tunnelConn, clientConn)
@@ -93,13 +94,27 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 
 			// don't timeout after the initial read, tunnel heart beating will kill
 			// dead connections
-			tunnelConn.SetReadDeadline(time.Time{})
+			tunnelConn.SetDeadline(time.Time{})
 
-			switch m := rawMsg.(type) {
-			case *msg.RegTun:
-				NewTunnel(tunnelConn, m)
-			default:
-				tunnelConn.Close()
+			// read messages from tunnel
+			// if we get a msg back
+			// we can pipe new data
+			// and a tunnel can only
+			// service ONE request
+			for {
+				if rawMsg, err := msg.ReadMsg(tunnelConn); err == nil {
+					switch m := rawMsg.(type) {
+					case *msg.RegTun:
+						NewTunnel(tunnelConn, m)
+					default:
+						tunnelConn.Close()
+						return
+					}
+				} else {
+					tunnelConn.Warn("Failed to read message: %v", err)
+					tunnelConn.Close()
+					return
+				}
 			}
 		}(c)
 	}
