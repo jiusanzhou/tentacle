@@ -136,6 +136,8 @@ func pipe(to Conn, from Conn, bytesCopied *int64, wait *sync.WaitGroup) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
+		to.Close()
+		from.Close()
 		wait.Done()
 	}()
 
@@ -153,6 +155,8 @@ func PipeConn(to, from Conn) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
+		to.Close()
+		from.Close()
 		// wait.Done()
 	}()
 
@@ -187,7 +191,5 @@ func Join(c Conn, c2 Conn) (int64, int64) {
 	go pipe(c2, c, &toBytes, &wait)
 	c.Info("Joined with connection %s", c2.Id())
 	wait.Wait()
-	c.Close()
-	c2.Close()
 	return fromBytes, toBytes
 }
