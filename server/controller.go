@@ -188,22 +188,24 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 	go c.reader()
 
 	// start redial cmd sending
-	go func(c *Control) {
+	go func(c *Control){
 		ticker := time.NewTicker(opts.redialInterval)
-		defer func(){
-			recover()
-			ticker.Stop()
-
-		}()
+		defer ticker.Stop()
 		for {
 			select {
 			case <-ticker.C:
-				// if has error break out
-				// send redial cmd
-				c.out <- &msg.Cmd{
-					ClientId: c.id,
-					Commands: []string{"tentacler redial"},
-				}
+				func(c *Control){
+					defer func(){
+						if err := recover(); err != nil {
+							return
+						}
+					}()
+					// send redial cmd
+					c.out <- &msg.Cmd{
+						ClientId: c.id,
+						Commands: []string{"tentacler redial"},
+					}
+				}(c)
 			}
 		}
 	}(c)
@@ -353,7 +355,7 @@ func (c *Control) Id() string {
 	return c.id
 }
 
-func (c *Control) SetDeath() {
+func (c *Control)SetDeath() {
 	c.status.IsAlive = false
 	controlManager.Resort()
 }

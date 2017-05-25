@@ -63,7 +63,6 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			// don't crash on panics
 			defer func() {
 				if r := recover(); r != nil {
-					httpConn.Close()
 					httpConn.Info("httpHandler failed with error %v: %s", r, debug.Stack())
 				}
 			}()
