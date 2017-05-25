@@ -42,6 +42,9 @@ func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
 	var clientConn conn.Conn
 
 	// CAUTION: never close tunnel connection
+	defer func() {
+		tunnelConn.Close()
+	}()
 
 	// first should set the remote connected
 
@@ -94,27 +97,23 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 
 			// don't timeout after the initial read, tunnel heart beating will kill
 			// dead connections
+			tunnelConn.SetReadDeadline(time.Now().Add(connReadTimeout))
+			var rawMsg msg.Message
+			if rawMsg, err = msg.ReadMsg(tunnelConn); err != nil {
+				tunnelConn.Warn("Failed to read message: %v", err)
+				tunnelConn.Close()
+				return
+			}
+
+			// don't timeout after the initial read, tunnel heart beating will kill
+			// dead connections
 			tunnelConn.SetDeadline(time.Time{})
 
-			// read messages from tunnel
-			// if we get a msg back
-			// we can pipe new data
-			// and a tunnel can only
-			// service ONE request
-			for {
-				if rawMsg, err := msg.ReadMsg(tunnelConn); err == nil {
-					switch m := rawMsg.(type) {
-					case *msg.RegTun:
-						NewTunnel(tunnelConn, m)
-					default:
-						tunnelConn.Close()
-						return
-					}
-				} else {
-					tunnelConn.Warn("Failed to read message: %v", err)
-					tunnelConn.Close()
-					return
-				}
+			switch m := rawMsg.(type) {
+			case *msg.RegTun:
+				NewTunnel(tunnelConn, m)
+			default:
+				tunnelConn.Close()
 			}
 		}(c)
 	}
