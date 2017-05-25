@@ -93,31 +93,12 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 			// don't timeout after the initial read, tunnel heart beating will kill
 			// dead connections
 			tunnelConn.SetReadDeadline(time.Time{})
-
-			// read messages from tunnel
-			// if we get a msg back
-			// we can pipe new data
-			// and a tunnel can only
-			// service ONE request
-
-			// this can not distinguish witch request
-			// should use this tunnel
-			// we may have 2 way to do that:
-			// 1. before data transporting, clients send `RegTun` message
-			// 2. we use control tunnel to transport `RegTun` message
-			// 3. directly use tunnel to open remote rather than controller
-			// in the first way, we can't handle it well
-			// in the second way, maybe cause plenty of msg
-			// though control connection
-			for {
-				var regTunMsg msg.RegTun
-				if err := msg.ReadMsgInto(tunnelConn, regTunMsg); err == nil {
-					NewTunnel(tunnelConn, regTunMsg)
-				} else {
-					tunnelConn.Warn("Failed to read message: %v", err)
-					tunnelConn.Close()
-					return
-				}
+			
+			switch m := rawMsg.(type) {
+			case *msg.RegTun:
+				NewTunnel(tunnelConn, m)
+			default:
+				tunnelConn.Close()
 			}
 		}(c)
 	}
