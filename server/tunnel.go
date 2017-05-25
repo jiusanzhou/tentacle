@@ -37,7 +37,7 @@ type Tunnel struct {
 	closing int32
 }
 
-func NewTunnel(tunnelConn conn.Conn, regTunMsg *msg.RegTun) {
+func NewTunnel(tunnelConn conn.Conn, regTunMsg msg.RegTun) {
 
 	var clientConn conn.Conn
 
@@ -101,15 +101,20 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 			// we can pipe new data
 			// and a tunnel can only
 			// service ONE request
+
+			// this can not distinguish witch request
+			// should use this tunnel
+			// we may have 2 way to do that:
+			// 1. before data transporting, clients send `RegTun` message
+			// 2. we use control tunnel to transport `RegTun` message
+			// 3. directly use tunnel to open remote rather than controller
+			// in the first way, we can't handle it well
+			// in the second way, maybe cause plenty of msg
+			// though control connection
 			for {
-				if rawMsg, err := msg.ReadMsg(tunnelConn); err == nil {
-					switch m := rawMsg.(type) {
-					case *msg.RegTun:
-						NewTunnel(tunnelConn, m)
-					default:
-						tunnelConn.Close()
-						return
-					}
+				var regTunMsg msg.RegTun
+				if err := msg.ReadMsgInto(tunnelConn, regTunMsg); err == nil {
+					NewTunnel(tunnelConn, regTunMsg)
 				} else {
 					tunnelConn.Warn("Failed to read message: %v", err)
 					tunnelConn.Close()
