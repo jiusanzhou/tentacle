@@ -93,7 +93,7 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 			// don't timeout after the initial read, tunnel heart beating will kill
 			// dead connections
 			tunnelConn.SetReadDeadline(time.Time{})
-			
+
 			switch m := rawMsg.(type) {
 			case *msg.RegTun:
 				NewTunnel(tunnelConn, m)
