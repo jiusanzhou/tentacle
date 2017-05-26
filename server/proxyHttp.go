@@ -75,6 +75,8 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 			if err != nil {
 				httpConn.Warn("read http request error, %v", err)
+				writeResponse(httpConn, serverError, 500)
+				httpConn.Close()
 				return
 			}
 
@@ -93,27 +95,8 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			// TODO: check username/password
 			if !auth(req) {
 				httpConn.Warn("Auth failed")
-
-				resp := fasthttp.AcquireResponse()
-				buf := fasthttp.AcquireByteBuffer()
-
-				resp.SetBody(unauthorizedMsg)
-				resp.SetStatusCode(407)
-				resp.Header.Set("server", "Tentacle")
-				resp.WriteTo(buf)
-
-				// for https
-				//if req.Method == "CONNECT" {
-				//	httpConn.Write(util.S2b("HTTP/1.0 200 OK\r\n\r\n"))
-				//}
-
-				httpConn.Write(buf.B)
-
-				fasthttp.ReleaseResponse(resp)
-				fasthttp.ReleaseByteBuffer(buf)
-
+				writeResponse(httpConn, unauthorizedMsg, 407)
 				httpConn.Close()
-
 				return
 			}
 
@@ -137,7 +120,9 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			ctl := controlManager.GetControlByRequestId(reqId)
 			if ctl == nil {
 				// socketConn.Write(util.S2b(BadGateway))
-				log.Error("Cann't Get control tunnel.")
+				httpConn.Error("Cann't Get control tunnel.")
+				writeResponse(httpConn, serverError, 500)
+				httpConn.Close()
 				return
 			}
 
@@ -159,20 +144,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 				if err != nil {
 					httpConn.Error("Dump request error, %v.", err)
-
-					resp := fasthttp.AcquireResponse()
-					buf := fasthttp.AcquireByteBuffer()
-
-					resp.SetBody(proxyServerMsg)
-					resp.SetStatusCode(200)
-					resp.Header.Set("server", "Tentacle")
-					resp.WriteTo(buf)
-
-					httpConn.Write(buf.B)
-
-					fasthttp.ReleaseResponse(resp)
-					fasthttp.ReleaseByteBuffer(buf)
-
+					writeResponse(httpConn, proxyServerMsg, 200)
 					httpConn.Close()
 					return
 				}
@@ -201,6 +173,25 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 var proxyAuthorizationHeader = "Proxy-Authorization"
 var unauthorizedMsg = []byte("407 Proxy Authentication Required")
 var proxyServerMsg = []byte("This is a proxy server")
+var serverError = []byte("Server error, please contact admin ---<a href=\"mailto:jsz3@live.com\">Zoe</a>")
+
+func writeResponse(c conn.Conn, b []byte, code int) {
+
+	resp := fasthttp.AcquireResponse()
+	buf := fasthttp.AcquireByteBuffer()
+
+	resp.SetBody(b)
+	resp.SetStatusCode(code)
+	resp.Header.Set("server", "Tentacle")
+	resp.WriteTo(buf)
+
+	c.Info(string(buf.B))
+
+	c.Write(buf.B)
+
+	fasthttp.ReleaseResponse(resp)
+	fasthttp.ReleaseByteBuffer(buf)
+}
 
 var Authorization string
 
