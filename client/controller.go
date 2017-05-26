@@ -168,6 +168,7 @@ func (c *Control) heartbeat(lastPongAddr *int64, conn conn.Conn) {
 func (ctl *Control) control() {
 	defer func() {
 		if r := recover(); r != nil {
+			ctl.Clean()
 			log.Error("control recovering from failure %v", r)
 		}
 	}()
@@ -361,16 +362,7 @@ func (ctl *Control) Run() {
 				msg := cmd.message
 				go func() {
 					ctl.Info(msg)
-					for _, k := range ctl.remoteConns.GetKeys() {
-						if c := ctl.GetConn(k); c != nil {
-							c.Close()
-						}
-					}
-					for _, k := range ctl.tunnelConns.GetKeys() {
-						if c := ctl.GetTunnel(k); c != nil {
-							c.Close()
-						}
-					}
+					ctl.Clean()
 					done <- 1
 				}()
 			}
@@ -397,6 +389,22 @@ func (ctl *Control) Go(fn func()) {
 
 		fn()
 	}()
+}
+
+// Clean all connections
+
+func (ctl *Control) Clean(){
+
+	for _, k := range ctl.remoteConns.GetKeys() {
+		if c := ctl.GetConn(k); c != nil {
+			c.Close()
+		}
+	}
+	for _, k := range ctl.tunnelConns.GetKeys() {
+		if c := ctl.GetTunnel(k); c != nil {
+			c.Close()
+		}
+	}
 }
 
 // public interface
