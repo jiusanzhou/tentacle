@@ -9,7 +9,6 @@ import (
 	"io"
 	"math/rand"
 	"net"
-	"sync"
 )
 
 // Connection for controlling and data transportation.
@@ -132,13 +131,10 @@ func (c *loggedConn) SetType(typ string) {
 	c.Info("Renamed connection %s", oldId)
 }
 
-func pipe(to Conn, from Conn, bytesCopied *int64, wait *sync.WaitGroup) {
+func pipe(to Conn, from Conn, bytesCopied *int64) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
-		to.Close()
-		from.Close()
-		wait.Done()
 	}()
 
 	var err error
@@ -165,12 +161,10 @@ func PipeConn(to, from Conn) {
 
 		// read may return EOF with n > 0
 		// should always process n > 0 bytes before handling error
-		if n > 0 {
-			// Note: avoid overwrite err returned by Read.
-			if _, err := to.Write(buf[0:n]); err != nil {
-				from.Warn("Copied %d bytes to %s before failing with error %v", n, to.Id(), err)
-				break
-			}
+		// Note: avoid overwrite err returned by Read.
+		if _, err := to.Write(buf[0:n]); err != nil {
+			from.Warn("Copied %d bytes to %s before failing with error %v", n, to.Id(), err)
+			break
 		}
 
 		if err != nil {
@@ -183,13 +177,18 @@ func PipeConn(to, from Conn) {
 }
 
 func Join(c Conn, c2 Conn) (int64, int64) {
-	var wait sync.WaitGroup
 
-	wait.Add(2)
+	// the second conn is for blocking
+	// it should be the conn witch will
+	// be closed by other.
+	// and always be the data sender
+	// that means the gay who want data
+	// and send a data request
 	var fromBytes, toBytes int64
-	go pipe(c, c2, &fromBytes, &wait)
-	go pipe(c2, c, &toBytes, &wait)
-	wait.Wait()
+	// go pipe(c2, c, &fromBytes)
+	// pipe(c, c2, &toBytes)
+	go PipeConn(c2, c)
+	PipeConn(c, c2)
 	c.Info("Joined with connection %s [%s<->%s]", c2.Id(), c.RemoteAddr().String(), c2.RemoteAddr().String())
 	c.Close()
 	c2.Close()
