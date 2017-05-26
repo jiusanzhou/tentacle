@@ -332,7 +332,7 @@ func (ctl *Control) Run() {
 
 	// how long we should wait before we reconnect
 	maxWait := 30 * time.Second
-	wait := 1 * time.Second
+	wait := 0 * time.Second
 
 	ctl.Go(func() {
 		for {
@@ -341,14 +341,17 @@ func (ctl *Control) Run() {
 
 			// control only returns when a failure has occurred, so we're going to try to reconnect
 			if ctl.connStatus == mvc.ConnOnline {
-				wait = 1 * time.Second
+				wait = 0 * time.Second
 			}
 
 			log.Info("Waiting %d seconds before reconnecting", int(wait.Seconds()))
 			time.Sleep(wait)
 			// exponentially increase wait time
-			wait = 2 * wait
-			wait = time.Duration(math.Min(float64(wait), float64(maxWait)))
+			wait = 2 * wait + 1 * time.Second
+			if wait > maxWait {
+				wait = maxWait
+			}
+			// wait = time.Duration(math.Min(float64(wait), float64(maxWait)))
 			ctl.connStatus = mvc.ConnReconnecting
 		}
 	})
@@ -393,7 +396,7 @@ func (ctl *Control) Go(fn func()) {
 
 // Clean all connections
 
-func (ctl *Control) Clean(){
+func (ctl *Control) Clean() {
 
 	for _, k := range ctl.remoteConns.GetKeys() {
 		if c := ctl.GetConn(k); c != nil {
