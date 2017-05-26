@@ -190,7 +190,7 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 	// start redial cmd sending
 	go func(c *Control) {
 		ticker := time.NewTicker(opts.redialInterval)
-		defer func(){
+		defer func() {
 			recover()
 			ticker.Stop()
 
@@ -247,7 +247,17 @@ func (c *Control) manager() {
 			case *msg.CmdResp:
 			case *msg.DialResp:
 				// c.SetReady(m.ReqId)
-				c.conn.Debug("remote connection of [%s] is ready.", m.ReqId)
+				if m.Error != "" {
+					c.conn.Debug("Dial remote error, %s, close client connection.", m.Error)
+					// dial error, close the client connection
+					if c := controlManager.GetConn(m.ReqId); c != nil {
+						c.Close()
+					}
+					controlManager.DelConn(m.ReqId)
+
+				} else {
+					c.conn.Debug("remote connection of [%s] is ready.", m.ReqId)
+				}
 			case *msg.Ping:
 				c.lastPing = time.Now()
 				c.out <- &msg.Pong{}

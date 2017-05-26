@@ -90,6 +90,7 @@ type Dial struct {
 type DialResp struct {
 	ClientId string
 	ReqId    string
+	Error    string
 }
 
 type RegTun struct {

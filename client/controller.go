@@ -218,7 +218,7 @@ func (ctl *Control) control() {
 
 	if ctl.config.PoolSize == 0 {
 		ctl.GetTunnelConn = ctl.getTunnelDirect
-	}else {
+	} else {
 		ctl.initTunnelPool()
 	}
 
@@ -280,6 +280,11 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 	remoteRawConn, err := fasthttp.Dial(m.Addr)
 	if err != nil {
 		ctl.Error("Dial to remote %s error, %v", m.Addr, err)
+		msg.WriteMsg(ctl.ctlConn, &msg.DialResp{
+			ReqId:    m.ReqId,
+			ClientId: m.ClientId,
+			Error:    err.Error(),
+		})
 		return
 	}
 	remoteConn := conn.Wrap(remoteRawConn, "remote")
@@ -362,7 +367,7 @@ func (ctl *Control) Run() {
 						}
 					}
 					for _, k := range ctl.tunnelConns.GetKeys() {
-						if c := ctl.GetTunnel(k); c!=nil{
+						if c := ctl.GetTunnel(k); c != nil {
 							c.Close()
 						}
 					}
@@ -432,8 +437,7 @@ func NewControl(config *Configuration) *Control {
 	return ctl
 }
 
-
-func (ctl *Control) initTunnelPool(){
+func (ctl *Control) initTunnelPool() {
 	var err error
 	max := ctl.config.PoolSize
 	min := int(math.Ceil(float64(max / 5)))
