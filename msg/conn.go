@@ -2,33 +2,36 @@ package msg
 
 import (
 	"encoding/binary"
-	"errors"
-	"fmt"
 	"github.com/jiusanzhou/tentacle/conn"
+	"github.com/jiusanzhou/tentacle/util"
 )
 
-func readMsgShared(c conn.Conn) (buffer []byte, err error) {
+func readMsgShared(c conn.Conn) (buf []byte, err error) {
 	c.Debug("Waiting to read message")
 
-	var sz int64
-	err = binary.Read(c, binary.LittleEndian, &sz)
-	if err != nil {
-		return
-	}
-	c.Debug("Reading message with length: %d", sz)
+	//var sz int64
+	//err = binary.Read(c, binary.LittleEndian, &sz)
+	//if err != nil {
+	//	return
+	//}
+	//c.Debug("Reading message with length: %d", sz)
+	//
+	//buffer = make([]byte, sz) // ? This may be cause GC
+	// use byte pool
+	buf = util.GlobalLeakyBuf.Get()
+	// CAUTION:
+	// remember to put buffer back
+	// pack.go L16
 
-	buffer = make([]byte, sz) // ? This may be cause GC
-	n, err := c.Read(buffer)
-	c.Debug("Read message %s", buffer)
+	_, err = c.Read(buf)
 
-	if err != nil {
-		return
-	}
+	// don't check the error
+	// what is going on?
 
-	if int64(n) != sz {
-		err = errors.New(fmt.Sprintf("Expected to read %d bytes, but only read %d", sz, n))
-		return
-	}
+	//if int64(n) != sz {
+	//	err = errors.New(fmt.Sprintf("Expected to read %d bytes, but only read %d", sz, n))
+	//	return
+	//}
 
 	return
 }

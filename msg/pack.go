@@ -6,10 +6,14 @@ import (
 	"reflect"
 	// "gopkg.in/vmihailenco/msgpack.v2"
 	"github.com/pquerna/ffjson/ffjson"
+	"github.com/jiusanzhou/tentacle/util"
 )
 
 func unpack(buffer []byte, msgIn Message) (msg Message, err error) {
 	var env Envelope
+
+	// MUST release buffer
+	defer util.GlobalLeakyBuf.Put(buffer)
 
 	if err = ffjson.Unmarshal(buffer, &env); err != nil {
 		return
