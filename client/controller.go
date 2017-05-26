@@ -357,7 +357,12 @@ func (ctl *Control) Run() {
 				go func() {
 					ctl.Info(msg)
 					for _, k := range ctl.remoteConns.GetKeys() {
-						if c := ctl.remoteConns.Get(k).(conn.Conn); c != nil {
+						if c := ctl.GetConn(k); c != nil {
+							c.Close()
+						}
+					}
+					for _, k := range ctl.tunnelConns.GetKeys() {
+						if c := ctl.GetTunnel(k); c!=nil{
 							c.Close()
 						}
 					}
