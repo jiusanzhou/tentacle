@@ -5,6 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jiusanzhou/tentacle/conn"
+	"time"
+)
+
+const (
+	connReadTimeout time.Duration = 500 * time.Millisecond
 )
 
 func readMsgShared(c conn.Conn) (buffer []byte, err error) {
@@ -18,8 +23,8 @@ func readMsgShared(c conn.Conn) (buffer []byte, err error) {
 	c.Debug("Reading message with length: %d", sz)
 
 	buffer = make([]byte, sz) // ? This may be cause GC
+
 	n, err := c.Read(buffer)
-	c.Debug("Read message %s", buffer)
 
 	if err != nil {
 		return
