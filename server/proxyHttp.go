@@ -185,8 +185,6 @@ func writeResponse(c conn.Conn, b []byte, code int) {
 	resp.Header.Set("server", "Tentacle")
 	resp.WriteTo(buf)
 
-	c.Info(string(buf.B))
-
 	c.Write(buf.B)
 
 	fasthttp.ReleaseResponse(resp)

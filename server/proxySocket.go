@@ -66,6 +66,7 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 			// don't crash on panics
 			defer func() {
 				if r := recover(); r != nil {
+					socketConn.Close()
 					socketConn.Info("socketHandler failed with error %v: %s", r, debug.Stack())
 				}
 			}()
@@ -73,12 +74,16 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 			if err = HandShake(socketConn); err != nil {
 				log.Error("socks handshake:", err)
 				// may be a http request
+				// writeResponse(socketConn, serverError, 500)
+				socketConn.Close()
 				return
 			}
 
 			rawAddr, addr, err := GetRequest(socketConn)
 			if err != nil {
 				log.Error("error getting request:", err)
+				// writeResponse(socketConn, serverError, 500)
+				socketConn.Close()
 				return
 			}
 
@@ -92,6 +97,8 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 
 			if err != nil {
 				log.Debug("send connection confirmation:", err)
+				// writeResponse(socketConn, serverError, 500)
+				socketConn.Close()
 				return
 			}
 
@@ -104,6 +111,8 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 			if ctl == nil {
 				// socketConn.Write(util.S2b(BadGateway))
 				log.Error("Cann't Get control tunnel.")
+				writeResponse(socketConn, serverError, 500)
+				socketConn.Close()
 				return
 			}
 
