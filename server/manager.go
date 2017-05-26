@@ -6,7 +6,6 @@ import (
 	"github.com/jiusanzhou/tentacle/util"
 	"math/rand"
 	"time"
-	"io"
 )
 
 // Manager maps a client ID to Control structures
