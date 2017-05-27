@@ -16,7 +16,7 @@ const (
 	pingTimeoutInterval = 30 * time.Second
 	connReapInterval    = 10 * time.Second
 	controlWriteTimeout = 10 * time.Second
-	readyTimeout        = 1 * time.Second
+	readyTimeout        = 3 * time.Second
 )
 
 type Status struct {
