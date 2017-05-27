@@ -16,6 +16,7 @@ const (
 	pingTimeoutInterval = 30 * time.Second
 	connReapInterval    = 10 * time.Second
 	controlWriteTimeout = 10 * time.Second
+	readyTimeout        = 1 * time.Second
 )
 
 type Status struct {
@@ -102,6 +103,8 @@ func (ctl *Control) DelReadyChan(reqId string) {
 }
 
 // not for ready, for connection is done
+// if over time not ready
+// clear it
 
 func (ctl *Control) InitReady(reqId string) {
 	ctl.reqId2ReadyChan.Set(reqId, make(chan struct{}))
@@ -115,10 +118,16 @@ func (ctl *Control) SetReady(reqId string) {
 	}
 }
 
-func (ctl *Control) WaitReady(reqId string) error {
+func (ctl *Control) WaitReady(reqId string, timeout time.Duration) error {
 	if c, ok := ctl.reqId2ReadyChan.Get(reqId).(chan struct{}); ok {
-		<-c
-		return nil
+		timer := time.NewTimer(timeout)
+		select {
+		case <-timer.C:
+			return errors.New("Time out")
+		case <-c:
+			timer.Stop()
+			return nil
+		}
 	} else {
 		return errors.New("No request id, for ready chan")
 	}
@@ -246,7 +255,7 @@ func (c *Control) manager() {
 			switch m := mRaw.(type) {
 			case *msg.CmdResp:
 			case *msg.DialResp:
-				// c.SetReady(m.ReqId)
+				c.SetReady(m.ReqId)
 				if m.Error != "" {
 					c.conn.Debug("Dial remote error, %s, close client connection.", m.Error)
 					// dial error, close the client connection

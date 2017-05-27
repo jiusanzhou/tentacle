@@ -113,6 +113,7 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 				log.Error("Cann't Get control tunnel.")
 				writeResponse(socketConn, serverError, 500)
 				socketConn.Close()
+				controlManager.DelConn(reqId)
 				return
 			}
 
@@ -141,7 +142,13 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 			// controlManager.DelConn(reqId)
 			// socketConn.Close()
 
-			// TODO: shut down the remote connection
+			// wait for ready
+			err = ctl.WaitReady(reqId, readyTimeout)
+			if err!=nil{
+				socketConn.Error("Dial request timeout")
+				socketConn.Close()
+				controlManager.DelConn(reqId)
+			}
 
 		}(c)
 	}

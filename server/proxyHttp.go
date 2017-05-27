@@ -123,8 +123,11 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				httpConn.Error("Cann't Get control tunnel.")
 				writeResponse(httpConn, serverError, 500)
 				httpConn.Close()
+				controlManager.DelConn(reqId)
 				return
 			}
+
+			ctl.InitReady(reqId)
 
 			if req.Method == "CONNECT" {
 
@@ -146,6 +149,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 					httpConn.Error("Dump request error, %v.", err)
 					writeResponse(httpConn, proxyServerMsg, 200)
 					httpConn.Close()
+					controlManager.DelConn(reqId)
 					return
 				}
 
@@ -164,6 +168,14 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				})
 
 				// we must close this http conn if we finished one request.
+			}
+
+			// wait for ready
+			err = ctl.WaitReady(reqId, readyTimeout)
+			if err!=nil{
+				httpConn.Error("Dial request timeout")
+				httpConn.Close()
+				controlManager.DelConn(reqId)
 			}
 		}(c)
 	}

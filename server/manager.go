@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
 	"github.com/jiusanzhou/tentacle/util"
@@ -22,6 +23,9 @@ type Manager struct {
 	// request id to connection from public connections
 	connections *util.StringMap
 
+	// ready chan for request
+	reqId2ReadyChan *util.StringMap
+
 	// relationship from request id to client id
 	reqId2CliId *util.StringMap
 
@@ -35,17 +39,56 @@ func NewManager() *Manager {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	m := &Manager{
-		resort:      make(chan struct{}),
-		controls:    util.NewStringMap(),
-		controlIds:  []string{},
-		connections: util.NewStringMap(),
-		reqId2CliId: util.NewStringMap(),
-		Logger:      log.NewPrefixLogger("manager", "ctl"),
+		resort:          make(chan struct{}),
+		controls:        util.NewStringMap(),
+		controlIds:      []string{},
+		connections:     util.NewStringMap(),
+		reqId2ReadyChan: util.NewStringMap(),
+		reqId2CliId:     util.NewStringMap(),
+		Logger:          log.NewPrefixLogger("manager", "ctl"),
 	}
 
 	go m.ResortControls()
 
 	return m
+}
+
+// not for ready, for connection is done
+// if over time not ready
+// clear it
+
+func (m *Manager) DelReadyChan(reqId string) {
+	if c, ok := m.reqId2ReadyChan.Get(reqId).(chan struct{}); ok {
+		close(c)
+		m.reqId2ReadyChan.Del(reqId)
+	}
+}
+
+func (m *Manager) InitReady(reqId string) {
+	m.reqId2ReadyChan.Set(reqId, make(chan struct{}))
+}
+
+func (m *Manager) SetReady(reqId string) {
+	if c, ok := m.reqId2ReadyChan.Get(reqId).(chan struct{}); ok {
+		c <- struct{}{}
+	} else {
+		m.Error("No request id, for ready chan")
+	}
+}
+
+func (m *Manager) WaitReady(reqId string, timeout time.Duration) error {
+	if c, ok := m.reqId2ReadyChan.Get(reqId).(chan struct{}); ok {
+		timer := time.NewTimer(timeout)
+		select {
+		case <-timer.C:
+			return errors.New("Time out")
+		case <-c:
+			timer.Stop()
+			return nil
+		}
+	} else {
+		return errors.New("No request id, for ready chan")
+	}
 }
 
 // for controller's tunnel
@@ -124,6 +167,8 @@ func (m *Manager) GetControlByRequestId(requestId string) *Control {
 
 func (m *Manager) AddConn(requestId string, conn conn.Conn) {
 	m.connections.Set(requestId, conn)
+
+	m.InitReady(requestId)
 }
 
 func (m *Manager) GetConn(requestId string) conn.Conn {
@@ -137,6 +182,7 @@ func (m *Manager) GetConn(requestId string) conn.Conn {
 func (m *Manager) DelConn(requestId string) {
 	m.connections.Del(requestId)
 	m.reqId2CliId.Del(requestId)
+	m.DelReadyChan(requestId)
 }
 
 func (m *Manager) Resort() {
