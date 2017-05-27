@@ -281,11 +281,11 @@ func (ctl *Control) handleDial(m *msg.Dial) {
 	remoteRawConn, err := fasthttp.Dial(m.Addr)
 	if err != nil {
 		ctl.Error("Dial to remote %s error, %v", m.Addr, err)
-		msg.WriteMsg(*ctl.ctlConn, &msg.DialResp{
-			ReqId:    m.ReqId,
-			ClientId: m.ClientId,
-			Error:    err.Error(),
-		})
+		//msg.WriteMsg(*(ctl.ctlConn), &msg.DialResp{
+		//	ReqId:    m.ReqId,
+		//	ClientId: m.ClientId,
+		//	Error:    err.Error(),
+		//})
 		return
 	}
 	remoteConn := conn.Wrap(remoteRawConn, "remote")

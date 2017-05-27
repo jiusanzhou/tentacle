@@ -112,6 +112,7 @@ func tunnelListener(addr string, tlsConfig *tls.Config) {
 
 			switch m := rawMsg.(type) {
 			case *msg.RegTun:
+				controlManager.SetReady(m.ReqId)
 				NewTunnel(tunnelConn, m)
 			default:
 				tunnelConn.Close()

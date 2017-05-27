@@ -127,8 +127,6 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				return
 			}
 
-			ctl.InitReady(reqId)
-
 			if req.Method == "CONNECT" {
 
 				// handle https
@@ -171,7 +169,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			}
 
 			// wait for ready
-			err = ctl.WaitReady(reqId, readyTimeout)
+			err = controlManager.WaitReady(reqId, readyTimeout)
 			if err!=nil{
 				httpConn.Error("Dial request timeout")
 				httpConn.Close()

@@ -86,9 +86,9 @@ func (m *Manager) WaitReady(reqId string, timeout time.Duration) error {
 			timer.Stop()
 			return nil
 		}
-	} else {
-		return errors.New("No request id, for ready chan")
 	}
+
+	return nil
 }
 
 // for controller's tunnel
@@ -167,7 +167,6 @@ func (m *Manager) GetControlByRequestId(requestId string) *Control {
 
 func (m *Manager) AddConn(requestId string, conn conn.Conn) {
 	m.connections.Set(requestId, conn)
-
 	m.InitReady(requestId)
 }
 

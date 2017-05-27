@@ -255,12 +255,12 @@ func (c *Control) manager() {
 			switch m := mRaw.(type) {
 			case *msg.CmdResp:
 			case *msg.DialResp:
-				c.SetReady(m.ReqId)
+				controlManager.SetReady(m.ReqId)
 				if m.Error != "" {
-					c.conn.Debug("Dial remote error, %s, close client connection.", m.Error)
+					c.conn.Error("Dial remote error, %s, close client connection.", m.Error)
 					// dial error, close the client connection
-					if c := controlManager.GetConn(m.ReqId); c != nil {
-						c.Close()
+					if cc := controlManager.GetConn(m.ReqId); cc != nil {
+						cc.Close()
 					}
 					controlManager.DelConn(m.ReqId)
 

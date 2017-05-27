@@ -1,8 +1,10 @@
 package server
 
 import (
+	"crypto/tls"
 	"encoding/binary"
 	"errors"
+	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
 	"github.com/jiusanzhou/tentacle/msg"
 	"github.com/jiusanzhou/tentacle/util"
@@ -11,8 +13,6 @@ import (
 	"runtime/debug"
 	"strconv"
 	"time"
-	"crypto/tls"
-	"github.com/jiusanzhou/tentacle/conn"
 )
 
 var (
@@ -143,8 +143,8 @@ func socketListener(addr string, tlsConfig *tls.Config) {
 			// socketConn.Close()
 
 			// wait for ready
-			err = ctl.WaitReady(reqId, readyTimeout)
-			if err!=nil{
+			err = controlManager.WaitReady(reqId, readyTimeout)
+			if err != nil {
 				socketConn.Error("Dial request timeout")
 				socketConn.Close()
 				controlManager.DelConn(reqId)
