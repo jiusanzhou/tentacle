@@ -8,9 +8,7 @@ import (
 const crashMessage = `panic: %v
 %s
 Oh noes! tentacle crashed!
-Please submit the stack trace and any relevant information to:
-github.com/jiusanzhou/tentacle/issues
-or Email to: jsz3@live.com | zhouhui3@myhexin.com`
+Please submit the stack trace and any relevant information to:`
 
 func MakePanicTrace(err interface{}) string {
 	stackBuf := make([]byte, 4096)
