@@ -100,17 +100,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 				return
 			}
 
-			// https://jdebp.eu./FGA/web-proxy-connection-header.html
-			req.Header.Del("Proxy-Connection")
-			req.Header.Del("Proxy-Authenticate")
-			req.Header.Del("Proxy-Authorization")
-			// Connection, Authenticate and Authorization are single hop Header:
-			// http://www.w3.org/Protocols/rfc2616/rfc2616.txt
-			// 14.10 Connection
-			//   The Connection general-header field allows the sender to specify
-			//   options that are desired for that particular connection and MUST NOT
-			//   be communicated by proxies over further connections.
-			req.Header.Del("Connection")
+			removeProxyHeaders(req)
 
 			// save conn with reqId to map
 			reqId := util.RandId(8)
@@ -170,7 +160,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 
 			// wait for ready
 			err = controlManager.WaitReady(reqId, readyTimeout)
-			if err!=nil{
+			if err != nil {
 				httpConn.Error("Dial request timeout")
 				httpConn.Close()
 				controlManager.DelConn(reqId)
@@ -178,6 +168,25 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 		}(c)
 	}
 
+}
+
+func removeProxyHeaders(req *http.Request) {
+
+	// If no Accept-Encoding header exists, Transport will add the headers it can accept
+	// and would wrap the response body with the relevant reader.
+	req.Header.Del("Accept-Encoding")
+	// curl can add that, see
+	// https://jdebp.eu./FGA/web-proxy-connection-header.html
+	req.Header.Del("Proxy-Connection")
+	req.Header.Del("Proxy-Authenticate")
+	req.Header.Del("Proxy-Authorization")
+	// Connection, Authenticate and Authorization are single hop Header:
+	// http://www.w3.org/Protocols/rfc2616/rfc2616.txt
+	// 14.10 Connection
+	//   The Connection general-header field allows the sender to specify
+	//   options that are desired for that particular connection and MUST NOT
+	//   be communicated by proxies over further connections.
+	req.Header.Del("Connection")
 }
 
 var proxyAuthorizationHeader = "Proxy-Authorization"
