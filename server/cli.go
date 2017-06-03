@@ -38,7 +38,7 @@ func parseArgs() *Options {
 
 	redialInterval := flag.Duration("redial-interval", 1*time.Minute, "Redial interval for each tentacler")
 
-	dialTimeout := flag.Duration("dial-timeout", 2*time.Second, "Dial remote timeout, if overtime close connection[for http proxy]")
+	dialTimeout := flag.Duration("dialTimeout", 2*time.Second, "Timeout for dialing remote, only for http proxy")
 
 	flag.Parse()
 
