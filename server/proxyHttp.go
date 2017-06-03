@@ -159,7 +159,7 @@ func httpListener(addr string, tlsConfig *tls.Config) {
 			}
 
 			// wait for ready
-			err = controlManager.WaitReady(reqId, readyTimeout)
+			err = controlManager.WaitReady(reqId, opts.dialTimeout)
 			if err != nil {
 				httpConn.Error("Dial request timeout")
 				httpConn.Close()

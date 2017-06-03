@@ -17,6 +17,8 @@ type Options struct {
 
 	redialInterval time.Duration
 
+	dialTimeout time.Duration
+
 	username string
 	password string
 }
@@ -35,6 +37,9 @@ func parseArgs() *Options {
 	pass := flag.String("pass", "", "Http proxy password")
 
 	redialInterval := flag.Duration("redial-interval", 1*time.Minute, "Redial interval for each tentacler")
+
+	dialTimeout := flag.Duration("dial-timeout", 2*time.Second, "Dial remote timeout, if overtime close connection[for http proxy]")
+
 	flag.Parse()
 
 	return &Options{
@@ -51,5 +56,7 @@ func parseArgs() *Options {
 		password: *pass,
 
 		redialInterval: *redialInterval,
+
+		dialTimeout: *dialTimeout,
 	}
 }
