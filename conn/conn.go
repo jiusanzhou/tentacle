@@ -131,7 +131,7 @@ func (c *loggedConn) SetType(typ string) {
 	c.Info("Renamed connection %s", oldId)
 }
 
-func pipe(to , from Conn) {
+func pipe(to, from Conn) {
 	buf := util.GlobalLeakyBuf.Get()
 	defer func() {
 		util.GlobalLeakyBuf.Put(buf)
@@ -162,9 +162,11 @@ func PipeConn(to, from Conn) {
 		// read may return EOF with n > 0
 		// should always process n > 0 bytes before handling error
 		// Note: avoid overwrite err returned by Read.
-		if _, err := to.Write(buf[0:n]); err != nil {
-			from.Warn("Copied %d bytes to %s before failing with error %v", n, to.Id(), err)
-			break
+		if n > 0 {
+			if _, err := to.Write(buf[0:n]); err != nil {
+				from.Warn("Copied %d bytes to %s before failing with error %v", n, to.Id(), err)
+				break
+			}
 		}
 
 		if err != nil {
@@ -185,8 +187,8 @@ func Join(c Conn, c2 Conn) (int64, int64) {
 	// that means the gay who want data
 	// and send a data request
 	var fromBytes, toBytes int64
-	 //go pipe(c2, c)
-	 //pipe(c, c2)
+	//go pipe(c2, c)
+	//pipe(c, c2)
 	go PipeConn(c2, c)
 	PipeConn(c, c2)
 	c.Info("Joined with connection %s [%s<->%s]", c2.Id(), c.RemoteAddr().String(), c2.RemoteAddr().String())
