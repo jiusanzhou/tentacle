@@ -2,16 +2,18 @@ package client
 
 import (
 	"fmt"
-	"os"
+	"github.com/inconshreveable/mousetrap"
 	"github.com/jiusanzhou/tentacle/log"
 	"github.com/jiusanzhou/tentacle/util"
-	"runtime"
-	"github.com/inconshreveable/mousetrap"
 	"math/rand"
+	"os"
+	"runtime"
 
 	// for debug pprof
 	// _ "net/http/pprof"
 	// "net/http"
+	"net"
+	"time"
 )
 
 func init() {
@@ -39,7 +41,6 @@ func Main() {
 	// set up logging
 	log.LogTo(opts.logto, opts.loglevel)
 
-
 	// read configuration file
 	config, err := LoadConfiguration(opts)
 	if err != nil {
@@ -55,6 +56,24 @@ func Main() {
 	}
 
 	rand.Seed(seed)
+
+	go func() {
+		// check connection
+		ticker := time.NewTicker(20 * time.Second)
+		for {
+			select {
+			case <-ticker.C:
+				// check baidu.com
+				c, err := net.DialTimeout("tcp", "baidu.com:80", 5*time.Second)
+				if err != nil {
+					// redial net
+					util.DoCommand(fmt.Sprintf("rasdial %s %s %s", opts.args[0], opts.args[1], opts.args[2]))
+				} else {
+					c.Close()
+				}
+			}
+		}
+	}()
 
 	NewControl(config).Run()
 }
