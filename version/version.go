@@ -7,7 +7,7 @@ import (
 const (
 	Proto = "0"
 	Major = "1"
-	Minor = "0"
+	Minor = "4"
 )
 
 const (
