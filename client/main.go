@@ -14,6 +14,7 @@ import (
 	// "net/http"
 	"net"
 	"time"
+	"strings"
 )
 
 func init() {
@@ -67,7 +68,7 @@ func Main() {
 				c, err := net.DialTimeout("tcp", "baidu.com:80", 5*time.Second)
 				if err != nil {
 					// redial net
-					util.DoCommand(fmt.Sprintf("rasdial %s %s %s", opts.args[0], opts.args[1], opts.args[2]))
+					util.DoCommand(fmt.Sprintf("rasdial %s %s %s", strings.Split(config.DialInfo, " ")...))
 				} else {
 					c.Close()
 				}
