@@ -59,7 +59,7 @@ func Main() {
 
 	go func() {
 		// check connection
-		ticker := time.NewTicker(5 * time.Second)
+		ticker := time.NewTicker(10 * time.Second)
 		for {
 			select {
 			case <-ticker.C:
@@ -68,12 +68,7 @@ func Main() {
 				if err != nil {
 					log.Warn("connecttion isn't ok")
 					// redial net
-					content, err:=util.DoCommand(fmt.Sprintf("rasdial %s", config.DialInfo))
-					if err!=nil{
-						log.Error(err.Error())
-					}else{
-						log.Debug("Reconnect result: ", util.B2s(content))
-					}
+					util.DoCommand("tentacler redial")
 				} else {
 					c.Close()
 					log.Debug("connecttion is ok")
