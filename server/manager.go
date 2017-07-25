@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/jiusanzhou/tentacle/conn"
 	"github.com/jiusanzhou/tentacle/log"
+	"github.com/jiusanzhou/tentacle/msg"
 	"github.com/jiusanzhou/tentacle/util"
 	"math/rand"
 	"time"
@@ -49,6 +50,7 @@ func NewManager() *Manager {
 	}
 
 	go m.ResortControls()
+	go m.redialManager()
 
 	return m
 }
@@ -155,6 +157,7 @@ func (m *Manager) GetControlByRequestId(requestId string) *Control {
 		return m.GetControl(clientId)
 	} else {
 		if ctl := m.RandGetControl(); ctl != nil {
+			ctl.reqCount++
 			m.reqId2CliId.Set(requestId, ctl.id)
 			return ctl
 		} else {
@@ -180,6 +183,14 @@ func (m *Manager) GetConn(requestId string) conn.Conn {
 
 func (m *Manager) DelConn(requestId string) {
 	m.connections.Del(requestId)
+
+	// get ctl id
+	if ctlId, ok := m.reqId2CliId.Get(requestId).(string); ok && ctlId != "" {
+		if ctl := m.GetControl(ctlId); ctl != nil {
+			ctl.reqCount--
+		}
+	}
+
 	m.reqId2CliId.Del(requestId)
 	m.DelReadyChan(requestId)
 }
@@ -212,7 +223,7 @@ func (m *Manager) sortControls() {
 		}
 
 		// check is alive
-		if c.status.IsAlive {
+		if c.status.Code == StatusCodeAlive {
 			ids = append(ids, k)
 		}
 
@@ -221,4 +232,79 @@ func (m *Manager) sortControls() {
 
 	m.controlIds = ids
 	m.ctlCount = len(m.controlIds)
+}
+
+// redial manager
+
+func (m *Manager) redialManager() {
+
+	// redial one by one
+	ticker := time.NewTicker(opts.redialInterval)
+	defer func() {
+		// recover()
+		ticker.Stop()
+
+	}()
+	index := 0
+	for {
+		<-ticker.C
+		// if has error break out
+		// send redial cmd
+
+		if index >= m.ctlCount {
+			if m.ctlCount == 0 {
+				continue
+			}
+			index = 0
+		}
+		if ctlId := m.controlIds[index]; ctlId != "" {
+			m.Debug("redial controller [%s]", ctlId)
+			m.redialController(ctlId)
+			index++
+		} else {
+			m.Debug("can not get control id from: [%d]", index)
+		}
+	}
+
+}
+
+func (m *Manager) redialController(ctlId string) {
+	// send redial signal to controller
+	if ctl := m.GetControl(ctlId); ctl != nil {
+		if ctl.reqCount <= 0 {
+			m.Debug("set %s preparing for redial", ctlId)
+			// set ctl to preparing
+			ctl.SetPreparing()
+
+			// send redial signal
+			ctl.out <- &msg.Cmd{
+				ClientId: ctl.id,
+				Commands: []string{"tentacler redial"},
+			}
+		} else {
+			// set ctl to wait preparing
+			m.Debug("set %s waiting for preparing for redial", ctlId)
+			ctl.SetWaitPreparing()
+			go func(ctl *Control) {
+				// check if req count equals zero
+				ticker := time.NewTicker(200 * time.Millisecond)
+			loop:
+				for {
+					<-ticker.C
+					if ctl.reqCount <= 0 {
+						m.Debug("set %s preparing for redial, break loop", ctlId)
+						// set ctl to preparing
+						ctl.SetPreparing()
+
+						// send redial signal
+						ctl.out <- &msg.Cmd{
+							ClientId: ctl.id,
+							Commands: []string{"tentacler redial"},
+						}
+						break loop
+					}
+				}
+			}(ctl)
+		}
+	}
 }

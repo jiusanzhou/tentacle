@@ -17,12 +17,17 @@ const (
 	connReapInterval    = 10 * time.Second
 	controlWriteTimeout = 10 * time.Second
 	readyTimeout        = 3 * time.Second
+
+	StatusCodeAlive = iota
+	StatusCodeWaitPreparing
+	StatusCodePreparing
+	StatusCodeDeath
 )
 
 type Status struct {
-	IsAlive   bool
 	Delay     time.Duration
 	Bandwidth float32
+	Code      uint
 }
 
 type Control struct {
@@ -88,10 +93,12 @@ func (ctl *Control) GetConn(reqId string) conn.Conn {
 }
 
 func (ctl *Control) DelConn(reqId string) {
+	ctl.reqCount--
 	ctl.connections.Del(reqId)
 }
 
 func (ctl *Control) AddConn(reqId string, conn conn.Conn) {
+	ctl.reqCount++
 	ctl.connections.Set(reqId, conn)
 }
 
@@ -171,7 +178,7 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 		return
 	}
 
-	c.status = &Status{IsAlive: true}
+	c.status = &Status{Code: StatusCodeAlive}
 
 	// register the control
 	if replaced := controlManager.AddControl(c.id, c); replaced != nil {
@@ -195,28 +202,6 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 	// manage the connection
 	go c.manager()
 	go c.reader()
-
-	// start redial cmd sending
-	go func(c *Control) {
-		ticker := time.NewTicker(opts.redialInterval)
-		defer func() {
-			recover()
-			ticker.Stop()
-
-		}()
-		for {
-			select {
-			case <-ticker.C:
-				// if has error break out
-				// send redial cmd
-				c.out <- &msg.Cmd{
-					ClientId: c.id,
-					Commands: []string{"tentacler redial"},
-				}
-			}
-		}
-	}(c)
-
 	go c.stopper()
 }
 
@@ -373,6 +358,16 @@ func (c *Control) Id() string {
 }
 
 func (c *Control) SetDeath() {
-	c.status.IsAlive = false
+	c.status.Code = StatusCodeDeath
+	controlManager.Resort()
+}
+
+func (c *Control) SetWaitPreparing() {
+	c.status.Code = StatusCodeWaitPreparing
+	controlManager.Resort()
+}
+
+func (c *Control) SetPreparing() {
+	c.status.Code = StatusCodePreparing
 	controlManager.Resort()
 }
