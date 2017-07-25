@@ -45,7 +45,7 @@ func parseArgs() *Options {
 
 	flag.Parse()
 
-	if len(flag.Args()) >= 0 && flag.Args()[0] == "version" {
+	if len(flag.Args()) > 0 && flag.Args()[0] == "version" {
 		fmt.Println(version.Full())
 		os.Exit(0)
 	}
