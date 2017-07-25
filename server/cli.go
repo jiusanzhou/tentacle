@@ -3,6 +3,9 @@ package server
 import (
 	"flag"
 	"time"
+	"fmt"
+	"github.com/jiusanzhou/tentacle/version"
+	"os"
 )
 
 type Options struct {
@@ -41,6 +44,11 @@ func parseArgs() *Options {
 	dialTimeout := flag.Duration("dialTimeout", 2*time.Second, "Timeout for dialing remote, only for http proxy")
 
 	flag.Parse()
+
+	if len(flag.Args()) >= 0 && flag.Args()[0] == "version" {
+		fmt.Println(version.Full())
+		os.Exit(0)
+	}
 
 	return &Options{
 		controlAddr: *controlAddr,

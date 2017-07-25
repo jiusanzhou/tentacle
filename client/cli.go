@@ -74,7 +74,7 @@ func ParseArgs() (opts *Options, err error) {
 	case "redial":
 		opts.args = flag.Args()[1:]
 	case "version":
-		fmt.Println(version.MajorMinor())
+		fmt.Println(version.Full())
 		os.Exit(0)
 	case "help":
 		flag.Usage()
