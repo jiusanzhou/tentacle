@@ -2,10 +2,10 @@ package server
 
 import (
 	"flag"
-	"time"
 	"fmt"
 	"github.com/jiusanzhou/tentacle/version"
 	"os"
+	"time"
 )
 
 type Options struct {
