@@ -16,6 +16,28 @@
 
 package server
 
-type Server struct {
+import (
+	"net"
 
+	"github.com/jiusanzhou/tentacle/pkg/options"
+	"github.com/soheilhy/cmux"
+)
+
+type Server struct {
+	opts   *Options
+	rawLis net.Listener
+	mux    cmux.CMux
+}
+
+func NewServer(ops ...options.Option) *Server {
+	var s = &Server{
+		// set opts from global
+		opts: opts,
+	}
+
+	for _, op := range ops {
+		op(s.opts)
+	}
+
+	return s
 }

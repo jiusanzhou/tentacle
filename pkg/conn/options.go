@@ -18,8 +18,6 @@ package conn
 
 import "github.com/jiusanzhou/tentacle/pkg/options"
 
-type Option func(opts options.Options)
-
 var (
 	Opts = options.NewOptions()
 )
@@ -38,19 +36,19 @@ func init() {
 	RegisterOption("over_http", false)
 }
 
-func Proxy(proxy string) Option {
+func Proxy(proxy string) options.Option {
 	return func(opts options.Options) {
 		opts.Set("proxy", proxy)
 	}
 }
 
-func Timeout(timeout int) Option {
+func Timeout(timeout int) options.Option {
 	return func(opts options.Options) {
 		opts.Set("timeout", timeout)
 	}
 }
 
-func MaxConn(maxConn int) Option {
+func MaxConn(maxConn int) options.Option {
 	return func(opts options.Options) {
 		opts.Set("max_conn", maxConn)
 	}
