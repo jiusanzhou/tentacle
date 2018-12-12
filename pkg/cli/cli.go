@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-package protocol
+package cli
 
-type CmdType int
+type Command interface {
 
-type CmdPayload []byte
+}
+
+type command struct {
+
+}
+
+func NewCommand() {
+
+}

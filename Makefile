@@ -60,13 +60,13 @@ pkg-list:
 	@$(GOPATH)/bin/govendor list
 
 build:
-	@go build cmd/tentacle
+	@go build .
 
 release:
 	@gox -verbose -ldflags "-X tentacle.Version=${VERSION}" \
 	-os="linux darwin windows" \
 	-arch="amd64 386" \
-	-output="release/tentacle-{{.OS}}-{{.Arch}}/{{.Dir}}" cmd/tentacle
+	-output="release/tentacle-{{.OS}}-{{.Arch}}/{{.Dir}}" .
 
 clean:
 	@echo "Cleaning up all the generated files"

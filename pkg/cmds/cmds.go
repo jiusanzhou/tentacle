@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package conn
+package cmds
 
-import "net"
+import "github.com/jiusanzhou/tentacle/tentacle"
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
+func init() {
+	tentacle.RegisterCommand(nil)
 }

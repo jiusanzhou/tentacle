@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package conn
+package transport
 
-import "net"
+import "io"
 
-type Conn interface {
-	net.Conn
+type TranType int
+
+type Transport interface {
+	Type() TranType
+	io.ReadWriter
 }
 
-type CommandConn interface {
-	Conn
+var (
+	transport Transport
+)
+
+func init() {
+
 }
 
-type TunnelConn interface {
-	Conn
+func RegisterTran() {
+
 }

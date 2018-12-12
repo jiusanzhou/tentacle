@@ -17,18 +17,45 @@
 package protocol
 
 import (
+	"fmt"
+
 	"github.com/jiusanzhou/tentacle/pkg/conn"
 )
 
 var protocols = make(map[ProtocolVersion]Protocol)
 
-type ProtocolVersion int
+type ProtocolVersion uint16
+
+type (
+	// CmdHandler is handler for control pipeline
+	CmdHandler func(cmdType uint32, data []byte) ([]byte, bool, error)
+
+	// PacketHandler is handler for data pipeline
+	PacketHandler func(idn uint32, data []byte) error
+
+	// EventHandler is handler for event while loop
+	EventHandler func(eventType uint32, data []byte) error
+)
 
 type Protocol interface {
 	Version() ProtocolVersion
 	IOLoop(conn conn.Conn) error
+
+	OnCommand(handler CmdHandler)
+	OnEvent(func() error)
+	OnPacket(func() error)
+
+	New() Protocol
 }
 
 func RegisterProtocol(p Protocol) {
 	protocols[p.Version()] = p
+}
+
+func MustWithProtocol(ver int) Protocol {
+	ptc, ok := protocols[ProtocolVersion(ver)]
+	if !ok {
+		panic(fmt.Sprint("not such protocol version: %s", ver))
+	}
+	return ptc
 }

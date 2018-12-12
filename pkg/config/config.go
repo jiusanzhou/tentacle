@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package conn
+package config
 
-import "net"
+import "time"
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
+type Configuration struct {
+	ProtocolVersion int           `yaml:"protocol_version"`
+	Tunnels         []string      `yaml:"tunnels"`
+	Listen          string        `yaml:"listen"`
+	Proxy           string        `yaml:"proxy"`
+	Auth            string        `yaml:"auth"`
+	MaxConn         int           `yaml:"max_conn"`
+	MTU             int           `yaml:"mtu"`
+	Interval        time.Duration `yaml:"interval"` // for heartbeat ping <-> pong
+	Timeout         time.Duration `yaml:"timeout"`
 }

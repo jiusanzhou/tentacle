@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-package tentacle
+package plugins

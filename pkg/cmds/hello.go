@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package conn
+package cmds
 
-import "net"
+import (
+	"github.com/jiusanzhou/tentacle/pkg/protocol"
+)
 
-type Conn interface {
-	net.Conn
+type HelloRequest struct {
+	version protocol.ProtocolVersion
+	authKey string
 }
 
-type CommandConn interface {
-	Conn
-}
+func init() {
 
-type TunnelConn interface {
-	Conn
 }

@@ -19,25 +19,43 @@ package server
 import (
 	"net"
 
-	"github.com/jiusanzhou/tentacle/pkg/options"
+	"github.com/jiusanzhou/knife-go/config/options"
+	"github.com/jiusanzhou/tentacle/tentacle"
 	"github.com/soheilhy/cmux"
 )
 
 type Server struct {
-	opts   *Options
+	instance *tentacle.Instance
+
+	opts   Options
 	rawLis net.Listener
 	mux    cmux.CMux
+
+	l  net.Listener
+	ml cmux.CMux
 }
 
-func NewServer(ops ...options.Option) *Server {
+func NewServer(ops ...options.Option) (*Server, error) {
 	var s = &Server{
 		// set opts from global
-		opts: opts,
+		opts: Opts,
 	}
 
 	for _, op := range ops {
 		op(s.opts)
 	}
 
-	return s
+	l, err := net.Listen("tcp", s.opts.Addr)
+	if err != nil {
+		// log.Errorf("listen addr: %s end with error: %s", s.opts.Addr, err)
+		return nil, err
+	}
+
+	s.ml = cmux.New(l)
+
+	// we chose http2 as tunnel and command conn
+
+	// should we need to use http2???
+
+	return s, nil
 }

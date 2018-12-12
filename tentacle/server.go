@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package conn
+package tentacle
 
-import "net"
+type server struct {
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
 }

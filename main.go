@@ -14,18 +14,28 @@
  * limitations under the License.
  */
 
-package conn
+package main
 
-import "net"
+import (
+	"os"
+	"runtime"
 
-type Conn interface {
-	net.Conn
-}
+	// import all commands we need to load
+	// sub commands also need to import at here
+	_ "github.com/jiusanzhou/tentacle/cmd/client"
+	_ "github.com/jiusanzhou/tentacle/cmd/server"
 
-type CommandConn interface {
-	Conn
-}
+	// loads plugins from pluings
+	_ "github.com/jiusanzhou/tentacle/plugins"
 
-type TunnelConn interface {
-	Conn
+	"github.com/jiusanzhou/tentacle/cmd"
+)
+
+func main() {
+
+	// try to set max P
+	// maybe this is not necessary
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	cmd.Run(os.Args[1:])
 }

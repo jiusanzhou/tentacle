@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-package conn
+package tentacle
 
-import "net"
+import (
+	"context"
 
-type Conn interface {
-	net.Conn
+	"github.com/jiusanzhou/tentacle/pkg/config"
+	"github.com/jiusanzhou/tentacle/pkg/protocol"
+)
+
+type Manager struct {
+	context  context.Context
+	protocol protocol.Protocol
+	config   *config.Configuration
 }
 
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
+func NewManager(conf *config.Configuration) *Manager {
+	m := &Manager{
+		context:  context.Background(),
+		config:   conf,
+		protocol: protocol.MustWithProtocol(conf.ProtocolVersion),
+	}
+	return m
 }

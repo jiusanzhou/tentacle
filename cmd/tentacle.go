@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package conn
+package cmd
 
-import "net"
+// Run adds all child commands to the root command and sets flags appropriately.
+// The args are usually filled with os.Args[1:].
+func Run(args []string) {
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
 }

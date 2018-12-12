@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package conn
+package client
 
-import "net"
+func init()  {
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
 }

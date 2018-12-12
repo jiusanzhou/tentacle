@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package conn
+package tentacle
 
-import "net"
+type Client struct {
 
-type Conn interface {
-	net.Conn
 }
 
-type CommandConn interface {
-	Conn
-}
+func NewClient(remote string) (*Client, error) {
 
-type TunnelConn interface {
-	Conn
+	return nil, nil
 }

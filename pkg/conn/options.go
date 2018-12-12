@@ -16,40 +16,41 @@
 
 package conn
 
-import "github.com/jiusanzhou/tentacle/pkg/options"
+import "github.com/jiusanzhou/knife-go/config/options"
+
+type Options struct {
+	options.Options
+}
 
 var (
-	Opts = options.NewOptions()
+	Opts = Options{}
 )
 
-func RegisterOption(key string, defaultValue interface{}) {
-	if err := Opts.Add(key, defaultValue); err != nil {
-		panic(err)
-	}
-}
-
 func init() {
-	RegisterOption("proxy", "")
-	RegisterOption("tls", false)
-	RegisterOption("timeout", 30)
-	RegisterOption("max_conn", 10)
-	RegisterOption("over_http", false)
+	options.Init(&Opts)
+	Opts.Register("proxy", "")
+	Opts.Register("tls", false)
+	Opts.Register("timeout", 30)
+	Opts.Register("max_conn", 10)
+	Opts.Register("over_http", false)
 }
 
-func Proxy(proxy string) options.Option {
-	return func(opts options.Options) {
-		opts.Set("proxy", proxy)
+var (
+	Proxy = func(proxy string) options.Option {
+		return func(opts options.Options) {
+			opts.Set("proxy", proxy)
+		}
 	}
-}
 
-func Timeout(timeout int) options.Option {
-	return func(opts options.Options) {
-		opts.Set("timeout", timeout)
+	Timeout = func(timeout int) options.Option {
+		return func(opts options.Options) {
+			opts.Set("timeout", timeout)
+		}
 	}
-}
 
-func MaxConn(maxConn int) options.Option {
-	return func(opts options.Options) {
-		opts.Set("max_conn", maxConn)
+	MaxConn = func(maxConn int) options.Option {
+		return func(opts options.Options) {
+			opts.Set("max_conn", maxConn)
+		}
 	}
-}
+)

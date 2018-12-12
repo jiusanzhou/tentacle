@@ -16,9 +16,18 @@
 
 package tentacle
 
-type Client struct{}
+import (
+	"context"
+)
 
-func NewClient(remote string) (*Client, error) {
+type Context struct {
+	context.Context
+	instance *Instance
+}
 
-	return nil, nil
+func NewContext(inst *Instance) Context {
+	return Context{
+		Context:  context.Background(),
+		instance: inst,
+	}
 }

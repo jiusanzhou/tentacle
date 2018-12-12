@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package conn
+package v1
 
-import "net"
+import "io"
 
-type Conn interface {
-	net.Conn
-}
-
-type CommandConn interface {
-	Conn
-}
-
-type TunnelConn interface {
-	Conn
+func fill(r io.Reader, b []byte) error {
+	l := len(b)
+	n, err := r.Read(b)
+	for n != l && err == nil {
+		var ni int
+		ni, err = r.Read(b[n:])
+		n += ni
+	}
+	return err
 }

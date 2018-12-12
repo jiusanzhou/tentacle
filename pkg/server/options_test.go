@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-package main
+package server
 
-func main() {
+import (
+	"testing"
 
+	"github.com/jiusanzhou/tentacle/pkg/options"
+	"fmt"
+)
+
+type FF struct {
+	b options.Option
+	a options.Option
+}
+
+func TestNewServer(t *testing.T) {
+	var svr = NewServer()
+	fmt.Println(svr)
 }

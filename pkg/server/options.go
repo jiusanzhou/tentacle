@@ -17,7 +17,7 @@
 package server
 
 import (
-	"github.com/jiusanzhou/tentacle/pkg/options"
+	"github.com/jiusanzhou/knife-go/config/options"
 )
 
 type Options struct {
@@ -28,7 +28,7 @@ type Options struct {
 }
 
 var (
-	opts = Options{
+	Opts = Options{
 		Addr: DefaultAddr,
 		Auth: DefaultAuth,
 	}
@@ -37,16 +37,16 @@ var (
 const (
 	DefaultAddr    = ":8080"
 	DefaultAuth    = "tentacle:123456"
-	DefaultTls     = false
+	DefaultTLS     = false
 	DefaultTimeout = 30
 	DefaultMaxConn = 10
 )
 
 func init() {
-	options.Init(&opts)
-	opts.Register("tls", DefaultTls)
-	opts.Register("timeout", DefaultTimeout)
-	opts.Register("max_conn", DefaultMaxConn)
+	options.Init(&Opts)
+	Opts.Register("tls", DefaultTLS)
+	Opts.Register("timeout", DefaultTimeout)
+	Opts.Register("max_conn", DefaultMaxConn)
 }
 
 var (
